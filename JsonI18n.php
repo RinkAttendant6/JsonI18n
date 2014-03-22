@@ -44,7 +44,7 @@ class JsonI18n {
             throw new \RuntimeException("Error reading file at $file.");
         }
         
-        $this->data = array_merge_recursive($this->data, json_decode($contents, true));
+        $this->data = array_replace_recursive($this->data, json_decode($contents, true));
     }
     
     /**

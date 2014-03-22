@@ -67,6 +67,21 @@ class JsonI18nTest extends PHPUnit_Framework_TestCase {
     public function testAddResourceInvalidFile() {
         $this->object->addResource('');
     }
+    
+    /**
+     * @covers JsonI18n::addResource
+     */
+    public function testAddMultipleResources() {
+        $this->object->addResource(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'resources/test.json');
+        $this->object->addResource(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'resources/global.json');
+
+        $this->object->debug();
+        
+        $this->assertEquals($this->object->__('documentTitleTag'), 'Routes and maps');
+        $this->assertEquals($this->object->__('documentTitleTag', 'fr-CA'), 'Circuits et cartes');
+        $this->assertEquals($this->object->__('goodbye'), 'Have a good day!');
+        $this->assertEquals($this->object->__('goodbye', 'fr-CA'), 'Bonne journée!');
+    }
 
     /**
      * @covers JsonI18n::getLanguage
