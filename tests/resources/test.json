@@ -1,0 +1,26 @@
+{
+    "arrayGroups": {
+        "headsign": {
+            "en-CA": "headsign_en",
+            "fr-CA": "headsign_fr",
+            "en-US": "invalid"
+        }
+    },
+    "values": {
+        "en-CA": {
+            "documentTitleTag": "Quick planner",
+            "routes": "Routes",
+            "destination": "Destination: %s",
+            "numBuses": "You will need to transfer %d time(s).",
+            "instructionTake": "Board the %d at %s at %s."
+        },
+
+        "fr-CA": {
+            "documentTitleTag": "Planificateur rapide",
+            "routes": "Circuits",
+            "destination": "Destination : %s",
+            "numBuses": "Vous devez transferer %d fois.",
+            "instructionTake": "Embarquer le %d à %s à %s."
+        }
+    }
+}
