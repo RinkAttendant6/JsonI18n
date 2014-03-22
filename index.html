@@ -1,82 +1,130 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>JsonI18n by RinkAttendant6</title>
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/main.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="JsonI18n : Simple PHP internationalization library using JSON data" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>JsonI18n</title>
   </head>
+
   <body>
 
-      <header>
-        <h1>JsonI18n</h1>
-        <p>Simple PHP internationalization library using JSON data</p>
-      </header>
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/RinkAttendant6/JsonI18n">View on GitHub</a>
 
-      <div id="banner">
-        <span id="logo"></span>
+          <h1 id="project_title">JsonI18n</h1>
+          <h2 id="project_tagline">Simple PHP internationalization library using JSON data</h2>
 
-        <a href="https://github.com/RinkAttendant6/JsonI18n" class="button fork"><strong>View On GitHub</strong></a>
-        <div class="downloads">
-          <span>Downloads:</span>
-          <ul>
-            <li><a href="https://github.com/RinkAttendant6/JsonI18n/zipball/master" class="button">ZIP</a></li>
-            <li><a href="https://github.com/RinkAttendant6/JsonI18n/tarball/master" class="button">TAR</a></li>
-          </ul>
-        </div>
-      </div><!-- end banner -->
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/RinkAttendant6/JsonI18n/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/RinkAttendant6/JsonI18n/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
 
-    <div class="wrapper">
-      <nav>
-        <ul></ul>
-      </nav>
-      <section>
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<h3>
+<a name="using-composer" class="anchor" href="#using-composer"><span class="octicon octicon-link"></span></a>Using Composer?</h3>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
+<p>JsonI18n is available through the <a href="https://packagist.org/packages/rinkattendant6/json-i18n">Packagist</a> repository.</p>
+
+<p>Add this dependency to your composer.phar file:</p>
+
+<div class="highlight highlight-json"><pre><span class="s2">"require"</span><span class="err">:</span> <span class="p">{</span>
+    <span class="nt">"rinkattendant6/json-i18n"</span><span class="p">:</span> <span class="s2">"dev-master"</span>
+<span class="p">}</span>
+</pre></div>
+
+<h3>
+<a name="not-using-composer" class="anchor" href="#not-using-composer"><span class="octicon octicon-link"></span></a>Not using Composer?</h3>
+
+<p>Perhaps you should look into it for your next project. For now, download the tarball and extract the JsonI18n.php file into your project.</p>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<h3>
+<a name="load-the-translations" class="anchor" href="#load-the-translations"><span class="octicon octicon-link"></span></a>Load the translations</h3>
+
+<p>Instantiate the <code>JsonI18n</code> class with a default language and call the <code>addResource</code> method of the class with the path of the translation file:</p>
+
+<div class="highlight highlight-php"><pre><span class="nv">$jsoni18n</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">JsonI18n</span><span class="p">(</span><span class="s1">'en-CA'</span><span class="p">);</span>
+<span class="nv">$jsoni18n</span><span class="o">-&gt;</span><span class="na">addResource</span><span class="p">(</span><span class="s1">'home.json'</span><span class="p">);</span>
+<span class="nv">$jsoni18n</span><span class="o">-&gt;</span><span class="na">addResource</span><span class="p">(</span><span class="s1">'menu.json'</span><span class="p">);</span> <span class="c1">// another file</span>
+</pre></div>
+
+<p>Loading a file with keys that already exist will overwrite the values of existing keys.</p>
+
+<h3>
+<a name="use-the-translations" class="anchor" href="#use-the-translations"><span class="octicon octicon-link"></span></a>Use the translations</h3>
+
+<h4>
+<a name="print-echo-it-out" class="anchor" href="#print-echo-it-out"><span class="octicon octicon-link"></span></a>Print (echo) it out</h4>
+
+<div class="highlight highlight-php"><pre><span class="nv">$jsoni18n</span><span class="o">-&gt;</span><span class="na">_e</span><span class="p">(</span><span class="s1">'YOUR KEY HERE'</span><span class="p">);</span>
+</pre></div>
+
+<h4>
+<a name="return-it" class="anchor" href="#return-it"><span class="octicon octicon-link"></span></a>Return it</h4>
+
+<p>Returning the localized text is useful if you wish to concatenate it or use it in another function:</p>
+
+<div class="highlight highlight-php"><pre><span class="nv">$jsoni18n</span><span class="o">-&gt;</span><span class="na">__</span><span class="p">(</span><span class="s1">'YOUR KEY HERE'</span><span class="p">);</span>
+<span class="c1">// For instance, you can do string manipulation to the text:</span>
+<span class="k">echo</span> <span class="nx">substr</span><span class="p">(</span><span class="nv">$jsoni18n</span><span class="o">-&gt;</span><span class="na">__</span><span class="p">(</span><span class="s1">'buttonText'</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="k">echo</span> <span class="nx">strtoupper</span><span class="p">(</span><span class="nv">$jsoni18n</span><span class="o">-&gt;</span><span class="na">__</span><span class="p">(</span><span class="s1">'companySlogan'</span><span class="p">));</span>
+</pre></div>
+
+<h4>
+<a name="text-with-parameters" class="anchor" href="#text-with-parameters"><span class="octicon octicon-link"></span></a>Text with parameters</h4>
+
+<p>Sometimes you will need to use variables within a string. Splitting up the string becomes a messy process and your translators will despise you for it because the context is lost.</p>
+
+<p>PHP's <a href="https://www.php.net/manual/en/function.sprintf.php"><code>sprintf</code></a> function allows variables to be substituted into strings, so for instance you could write:</p>
+
+<pre><code>...
+"busFare": "The fare for a regular bus is %.2f dollars.",
+"stationStatus": "Right now, %d buses are active at %s station."
 </code></pre>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<p>These strings are called <em>formatted</em> strings. To process these in JsonI18n, you can use the <code>_f</code> and <code>_ef</code> methods:</p>
 
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+<div class="highlight highlight-php"><pre><span class="nv">$jsoni18n</span><span class="o">-&gt;</span><span class="na">_ef</span><span class="p">(</span><span class="s1">'busFare'</span><span class="p">,</span> <span class="mf">3.40</span><span class="p">);</span> <span class="c1">// The fare for a regular bus is 3.40 dollars.</span>
+<span class="nv">$jsoni18n</span><span class="o">-&gt;</span><span class="na">_ef</span><span class="p">(</span><span class="s1">'stationStatus'</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">'Central'</span><span class="p">));</span> <span class="c1">// Right now, 5 buses are active at Central station.</span>
+</pre></div>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<h4>
+<a name="in-all-the-languages" class="anchor" href="#in-all-the-languages"><span class="octicon octicon-link"></span></a>In all the languages!</h4>
 
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
+<p>Remember the language you instantiated the class with? That's the language you'll be getting unless you explicitly specify the output language as the last parameter of these methods:</p>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<div class="highlight highlight-php"><pre><span class="nv">$jsoni18n</span><span class="o">-&gt;</span><span class="na">_ef</span><span class="p">(</span><span class="s1">'busFare'</span><span class="p">,</span> <span class="mf">3.40</span><span class="p">,</span> <span class="s1">'fr-CA'</span><span class="p">);</span> <span class="c1">// Le tarif pour l'autobus est $3.40</span>
+</pre></div>
 
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+<p>This allows you to print the text out in <strong>ALL THE LANGUAGES</strong> (provided that you have the translations of course).</p>
       </section>
-      <footer>
-        <p>Project maintained by <a href="https://github.com/RinkAttendant6">RinkAttendant6</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></small></p>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">JsonI18n maintained by <a href="https://github.com/RinkAttendant6">RinkAttendant6</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
     
+
   </body>
 </html>
