@@ -1,0 +1,20 @@
+{
+    "name": "rinkattendant6/json-i18n",
+    "keywords": ["internationalization", "localization"],
+    "license": "MPL-2.0",
+    "authors": [
+        {
+            "name": "Vincent Diep",
+            "role": "Developer"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/RinkAttendant6/JsonI18n"
+        }
+    ],
+    "suggest": {
+        "geraintluff/jsv4": "dev-master"
+    }
+}
