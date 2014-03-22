@@ -1,5 +1,6 @@
 {
     "name": "rinkattendant6/json-i18n",
+    "description": "Simple PHP internationalization library using JSON data.",
     "keywords": ["internationalization", "localization"],
     "license": "MPL-2.0",
     "authors": [
