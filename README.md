@@ -1,10 +1,10 @@
-# JsonI18n [![Build Status](https://travis-ci.org/RinkAttendant6/JsonI18n.svg?branch=master)](https://travis-ci.org/RinkAttendant6/JsonI18n)
+# JsonI18n [![Build Status](https://travis-ci.org/RinkAttendant6/JsonI18n.svg?branch=master)](https://travis-ci.org/RinkAttendant6/JsonI18n) [![Latest Stable Version](https://poser.pugx.org/rinkattendant6/json-i18n/v/stable.png)](https://packagist.org/packages/rinkattendant6/json-i18n) [![Total Downloads](https://poser.pugx.org/rinkattendant6/json-i18n/downloads.png)](https://packagist.org/packages/rinkattendant6/json-i18n)
 
-Simple PHP internationalization library using JSON data
+Simple PHP internationalization library using JSON data.
 
 ## License
 
-This library is made available under the [Mozilla Public License, version 2.0](https://www.mozilla.org/MPL/2.0/).
+[![License](https://poser.pugx.org/rinkattendant6/json-i18n/license.png)](https://packagist.org/packages/rinkattendant6/json-i18n) This library is made available under the [Mozilla Public License, version 2.0](https://www.mozilla.org/MPL/2.0/).
 
 ## Usage
 
