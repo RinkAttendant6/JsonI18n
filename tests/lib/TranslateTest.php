@@ -93,8 +93,6 @@ class TranslateTest extends \PHPUnit_Framework_TestCase {
     public function testAddMultipleResources() {
         $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
         $this->object->addResource(dirname(__FILE__) . '/../resources/global.json');
-
-        $this->object->debug();
         
         $this->assertEquals($this->object->__('documentTitleTag'), 'Routes and maps');
         $this->assertEquals($this->object->__('documentTitleTag', 'fr-CA'), 'Circuits et cartes');
