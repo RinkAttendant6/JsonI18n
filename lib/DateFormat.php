@@ -75,6 +75,9 @@ class DateFormat {
      * @throws \InvalidArgumentException If the locale or formatter name is invalid.
      */
     public function format($datetime, $formatter, $locale = null) {
+        
+        throw new \Exception('Test');
+        
         if($locale === null) {
             $locale = $this->locale;
         }
