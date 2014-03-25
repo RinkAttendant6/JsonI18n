@@ -1,0 +1,26 @@
+{
+    "formatters": {
+        "en-CA": {
+            "day_date": {
+                "pattern": "eeee d MMMM yyyy"
+            },
+            "day_date_time": {
+                "pattern": "EEE d MMM, yyyy @ HH:mm"
+            },
+            "day": {
+                "pattern": "cccc"
+            }
+        },
+        "fr-CA": {
+            "day_date": {
+                "pattern": "eeee d MMMM yyyy"
+            },
+            "day_date_time": {
+                "pattern": "EEE d MMM, yyyy à HH:mm"
+            },
+            "day": {
+                "pattern": "cccc"
+            }
+        }
+    }
+}
