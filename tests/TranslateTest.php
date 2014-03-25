@@ -47,11 +47,26 @@ class TranslateTest extends \PHPUnit_Framework_TestCase {
      * @covers JsonI18n::__construct
      */
     public function testDefaultConstructor() {
-        $obj1 = new Translate();
         $obj2 = new Translate('en-CA');
         
-        $this->assertEquals(\PHPUnit_Framework_Assert::readAttribute($obj1, 'lang'), \PHPUnit_Framework_Assert::readAttribute($obj1, 'defaultLanguage'));
         $this->assertEquals(\PHPUnit_Framework_Assert::readAttribute($obj2, 'lang'), 'en-CA');
+    }
+    
+    /**
+     * @covers JsonI18n::__construct
+     * @expectedException \PHPUnit_Framework_Error_Warning
+     */
+    public function testConstructorFail() {
+        new Translate();
+    }
+    
+    /**
+     * @covers JsonI18n::__construct
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Invalid language.
+     */
+    public function testConstructorInvalidLanguage() {
+        new Translate('');
     }
 
     /**

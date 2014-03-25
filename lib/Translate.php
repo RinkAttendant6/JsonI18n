@@ -14,12 +14,6 @@ class Translate {
     protected $lang;
     
     /**
-     * The default fallback language
-     * @var string
-     */
-    protected $defaultLanguage = 'fr-CA';
-    
-    /**
      * Localization data
      * @var array
      */
@@ -29,8 +23,11 @@ class Translate {
      * Creates a new JsonI18n instance
      * @param string $lang The default output language
      */
-    public function __construct($lang = '') {
-        ($this->lang = $lang) or ($this->lang = $this->defaultLanguage);
+    public function __construct($lang) {
+        if(empty($lang)) {
+            throw new \InvalidArgumentException('Invalid language.');
+        }
+        $this->lang = $lang;
     }
     
     /**
@@ -152,7 +149,7 @@ class Translate {
         }
         
         if($lang === null) {
-            $lang = $this->defaultLanguage;
+            $lang = $this->lang;
         }
         
         if(!isset($this->data['arrayGroups'][$group][$lang])) {
