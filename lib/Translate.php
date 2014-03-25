@@ -1,10 +1,11 @@
 <?php
+namespace JsonI18n;
 
 /**
  * Internationalization class to handle resource strings.
  * @author Vincent Diep
  */
-class JsonI18n {
+class Translate {
     
     /**
      * The language to display
