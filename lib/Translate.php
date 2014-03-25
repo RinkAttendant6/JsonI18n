@@ -22,6 +22,7 @@ class Translate {
     /**
      * Creates a new JsonI18n\Translate instance
      * @param string $lang The default output language
+     * @throws \InvalidArgumentException If the language parameter is empty
      */
     public function __construct($lang) {
         if(empty($lang)) {
