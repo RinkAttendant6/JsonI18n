@@ -20,7 +20,7 @@ class Translate {
     protected $data = array();
     
     /**
-     * Creates a new JsonI18n instance
+     * Creates a new JsonI18n\Translate instance
      * @param string $lang The default output language
      */
     public function __construct($lang) {
@@ -47,7 +47,7 @@ class Translate {
     
     /**
      * Returns the current language
-     * @return string A language code string in the format of: ISO 639-1 language identifier - ISO 3166-1 alpha-2 country code
+     * @return string
      */
     public function getLanguage() {
         return $this->lang;
