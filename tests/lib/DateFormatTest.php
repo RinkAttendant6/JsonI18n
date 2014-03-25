@@ -21,6 +21,7 @@ class DateFormatTest extends \PHPUnit_Framework_TestCase {
      * This method is called before a test is executed.
      */
     protected function setUp() {
+        date_default_timezone_set('America/Toronto');
         $this->object = new DateFormat('fr-CA');
     }
 
