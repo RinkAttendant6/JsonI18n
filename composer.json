@@ -9,6 +9,12 @@
             "role": "Developer"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "JsonI18n\\": "lib/",
+            "JsonI18n\\Tests\\": "tests/"
+        }
+    },
     "repositories": [
         {
             "type": "vcs",
