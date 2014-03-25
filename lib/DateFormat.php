@@ -76,8 +76,6 @@ class DateFormat {
      */
     public function format($datetime, $formatter, $locale = null) {
         
-        throw new \Exception('Test');
-        
         if($locale === null) {
             $locale = $this->locale;
         }
