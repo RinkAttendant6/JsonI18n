@@ -1,10 +1,11 @@
 <?php
+namespace JsonI18n;
 
 /**
  * Internationalization class to handle resource strings.
  * @author Vincent Diep
  */
-class JsonI18n {
+class Translate {
     
     /**
      * The language to display
@@ -13,23 +14,21 @@ class JsonI18n {
     protected $lang;
     
     /**
-     * The default fallback language
-     * @var string
-     */
-    protected $defaultLanguage = 'fr-CA';
-    
-    /**
      * Localization data
      * @var array
      */
     protected $data = array();
     
     /**
-     * Creates a new JsonI18n instance
+     * Creates a new JsonI18n\Translate instance
      * @param string $lang The default output language
+     * @throws \InvalidArgumentException If the language parameter is empty
      */
-    public function __construct($lang = '') {
-        ($this->lang = $lang) or ($this->lang = $this->defaultLanguage);
+    public function __construct($lang) {
+        if(empty($lang)) {
+            throw new \InvalidArgumentException('Invalid language.');
+        }
+        $this->lang = $lang;
     }
     
     /**
@@ -49,7 +48,7 @@ class JsonI18n {
     
     /**
      * Returns the current language
-     * @return string A language code string in the format of: ISO 639-1 language identifier - ISO 3166-1 alpha-2 country code
+     * @return string
      */
     public function getLanguage() {
         return $this->lang;
@@ -151,7 +150,7 @@ class JsonI18n {
         }
         
         if($lang === null) {
-            $lang = $this->defaultLanguage;
+            $lang = $this->lang;
         }
         
         if(!isset($this->data['arrayGroups'][$group][$lang])) {
