@@ -22,13 +22,9 @@ class Translate {
     /**
      * Creates a new JsonI18n\Translate instance
      * @param string $lang The default output language
-     * @throws \InvalidArgumentException If the language parameter is empty
      */
     public function __construct($lang) {
-        if(empty($lang)) {
-            throw new \InvalidArgumentException('Invalid language.');
-        }
-        $this->lang = $lang;
+        $this->setLanguage($lang);
     }
     
     /**
@@ -44,6 +40,19 @@ class Translate {
         }
         
         $this->data = array_replace_recursive($this->data, json_decode($contents, true));
+    }
+    
+    /**
+     * Sets the default language
+     * @param string $lang The language
+     * @throws \InvalidArgumentException If the langauge is invalid
+     */
+    public function setLanguage($lang) {
+        if (!is_string($lang) || empty($lang)) {
+            throw new \InvalidArgumentException("Invalid language $lang");
+        }
+        
+        $this->lang = $lang;
     }
     
     /**
