@@ -169,7 +169,7 @@ class Translate {
         
         foreach($arr as &$v) {
         
-            if(!isset($v[$keep])) {
+            if(!array_key_exists($keep, $v)) {
                 throw new \OutOfBoundsException("Invalid array index: $keep");
             }
         
