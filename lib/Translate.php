@@ -167,18 +167,27 @@ class Translate {
         }
         $keep = $this->data['arrayGroups'][$group][$lang];
         
-        foreach($arr as &$v) {
-        
-            if(!array_key_exists($keep, $v)) {
-                throw new \OutOfBoundsException("Invalid array index: $keep");
+        if (array_key_exists($keep, $arr)) {
+            // One dimensional array
+            $arr[$group] = $arr[$keep];
+            foreach ($this->data['arrayGroups'][$group] as $g) {
+                unset($arr[$g]);
             }
-        
-            $v[$group] = $v[$keep];
-            foreach($this->data['arrayGroups'][$group] as $g) {
-                unset($v[$g]);
+        } else {
+            // Multi-dimensional array
+            foreach($arr as &$v) {
+
+                if(!array_key_exists($keep, $v)) {
+                    throw new \OutOfBoundsException("Invalid array index: $keep");
+                }
+
+                $v[$group] = $v[$keep];
+                foreach($this->data['arrayGroups'][$group] as $g) {
+                    unset($v[$g]);
+                }
             }
+            unset($v);
         }
-        unset($v);
     }
 
     /**

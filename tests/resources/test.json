@@ -4,6 +4,10 @@
             "en-CA": "headsign_en",
             "fr-CA": "headsign_fr",
             "en-US": "invalid"
+        },
+        "subtext": {
+            "en-CA": "subtext_en",
+            "fr-CA": "subtext_fr"
         }
     },
     "values": {

@@ -19,12 +19,23 @@ class TranslateTest extends \PHPUnit_Framework_TestCase {
     
     /**
      * Some sample array data
-     * @var array
+     * @var array[]
      */
     protected $arr = array(
         array('headsign_en' => 'University', 'headsign_fr' => 'Université'),
         array('headsign_en' => 'College', 'headsign_fr' => 'Collège'),
         array('headsign_en' => 'Airport', 'headsign_fr' => 'Aéroport')
+    );
+    
+    /**
+     * Sample one dimensional array
+     * @var string[]
+     */
+    protected $arrFlat = array(
+        'headsign_en' => 'Blackbird Mall',
+        'headsign_fr' => 'Centre commercial Blackbird',
+        'subtext_en' => 'Main Street',
+        'subtext_fr' => 'Rue Main'
     );
 
     /**
@@ -223,6 +234,20 @@ class TranslateTest extends \PHPUnit_Framework_TestCase {
             array('headsign' => 'Université'),
             array('headsign' => 'Collège'),
             array('headsign' => 'Aéroport')
+        ));
+    }
+    
+    public function testLocalizeArray1D() {
+        $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
+        
+        $arr1 = $this->arrFlat;
+        
+        $this->object->localizeArray($arr1, 'headsign', 'en-CA');
+        $this->object->localizeArray($arr1, 'subtext', 'fr-CA');
+        
+        $this->assertEquals($arr1, array(
+            'headsign' => 'Blackbird Mall',
+            'subtext' => 'Rue Main'
         ));
     }
     
