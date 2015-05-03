@@ -29,6 +29,10 @@ JsonI18n is available through the [Packagist](https://packagist.org/packages/rin
 
 Loading a file with keys that already exist will overwrite the values of existing keys.
 
+### Setting and getting the default language
+
+The default language is initially specified in the constructor. You may call the `getLanguage` and `setLanguage` methods to get and set the default language, respectively.
+
 ### Working with localized text
 
 The methods `__` (two underscores), `_e`, `_f`, and `_ef` allow you to work with localized text.
@@ -38,7 +42,7 @@ The methods `__` (two underscores), `_e`, `_f`, and `_ef` allow you to work with
 - `_f`: Returns formatted localized text. Use this method if you have placeholders in your string that need to be passed through `sprintf` or `vsprintf`. Pass the parameter value(s) as the second parameter of the method. The method accepts string, integer, float, NULL, and array (for multiple parameters).
 - `_ef`: Prints formatted localized text. See instructions for previous method.
  
-By default, these methods will output text in the language specified in the constructor (the fallback language if none is specified). You may explicitly specify the output language as the last parameter of these methods.
+By default, these methods will output text in the language specified in the constructor. You may explicitly specify the output language as the last parameter of these methods.
 
 ### Debugging
 
