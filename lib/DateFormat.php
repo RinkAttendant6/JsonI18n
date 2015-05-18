@@ -6,7 +6,8 @@ namespace JsonI18n;
  * Internationalization class to handle date formatting
  * @author Vincent Diep
  */
-class DateFormat {
+class DateFormat
+{
     
     /**
      * The locale to display
@@ -16,7 +17,7 @@ class DateFormat {
 
     /**
      * Localization data
-     * @var array 
+     * @var array
      */
     protected $formatters = array();
 
@@ -26,7 +27,7 @@ class DateFormat {
      * @throws \InvalidArgumentException If the locale parameter is empty
      */
     public function __construct($locale) {
-        if(empty($locale)) {
+        if (empty($locale)) {
             throw new \InvalidArgumentException('Invalid locale.');
         }
         
@@ -36,7 +37,7 @@ class DateFormat {
     public function addResource($file) {
         $contents = file_get_contents($file);
         
-        if($contents === false) {
+        if ($contents === false) {
             throw new \RuntimeException("Error reading file at $file.");
         }
         
@@ -48,16 +49,14 @@ class DateFormat {
      * @param array $data The data from the resource file
      */
     private function processData(array $data) {
-        foreach($data['formatters'] as $locale => $f) {
-            
-            if(!isset($this->formatters[$locale])) {
+        foreach ($data['formatters'] as $locale => $f) {
+            if (!isset($this->formatters[$locale])) {
                 $this->formatters[$locale] = array();
             }
             
-            foreach($f as $formatter => $d) {
-                
+            foreach ($f as $formatter => $d) {
                 $calendar = \IntlDateFormatter::GREGORIAN;
-                if(isset($d['calendar']) && $d['calendar'] === 'traditional') {
+                if (isset($d['calendar']) && $d['calendar'] === 'traditional') {
                     $calendar = \IntlDateFormatter::TRADITIONAL;
                 }
                 
@@ -76,19 +75,19 @@ class DateFormat {
      */
     public function format($datetime, $formatter, $locale = null) {
         
-        if($locale === null) {
+        if ($locale === null) {
             $locale = $this->locale;
         }
         
-        if(!($datetime instanceof \DateTime)) {
+        if (!($datetime instanceof \DateTime)) {
             $datetime = new \DateTime($datetime);
         }
         
-        if(!isset($this->formatters[$locale])) {
+        if (!isset($this->formatters[$locale])) {
             throw new \InvalidArgumentException('Locale data not found.');
         }
         
-        if(!isset($this->formatters[$locale][$formatter])) {
+        if (!isset($this->formatters[$locale][$formatter])) {
             throw new \InvalidArgumentException('Formatter not found for specified locale.');
         }
         
@@ -103,15 +102,15 @@ class DateFormat {
      * @throws \InvalidArgumentException If the locale or formatter name is invalid.
      */
     public function getFormatter($formatter, $locale = null) {
-        if($locale === null) {
+        if ($locale === null) {
             $locale = $this->locale;
         }
         
-        if(!isset($this->formatters[$locale])) {
+        if (!isset($this->formatters[$locale])) {
             throw new \InvalidArgumentException('Locale data not found.');
         }
         
-        if(!isset($this->formatters[$locale][$formatter])) {
+        if (!isset($this->formatters[$locale][$formatter])) {
             throw new \InvalidArgumentException('Formatter not found for specified locale.');
         }
         
@@ -123,17 +122,16 @@ class DateFormat {
      * @codeCoverageIgnore
      */
     public function debug() {
-        foreach($this->formatters as $locale => $formats) {
+        foreach ($this->formatters as $locale => $formats) {
             echo "\n# $locale\n";
-            foreach($formats as $name => $format) {
+            foreach ($formats as $name => $format) {
                 echo "## $name\n";
-                echo "Locale: " . $format->getLocale(\Locale::VALID_LOCALE) . "\n" . 
+                echo "Locale: " . $format->getLocale(\Locale::VALID_LOCALE) . "\n" .
                      "DateType: " . $format->getDateType() . "\n" .
                      "TimeType: " . $format->getTimeType() . "\n" .
-                     "Calendar: " . $format->getCalendar() . "\n" . 
+                     "Calendar: " . $format->getCalendar() . "\n" .
                      "Pattern: " . $format->getPattern() . "\n\n";
             }
         }
     }
-    
 }
