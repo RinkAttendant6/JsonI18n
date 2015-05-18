@@ -23,5 +23,12 @@
     ],
     "suggest": {
         "geraintluff/jsv4": "dev-master"
+    },
+    "require-dev": {
+        "phpmd/phpmd" : "@stable",
+        "phpunit/phpunit": "4.6.*",
+        "sebastian/phpcpd": "*",
+        "sebastian/phpdcd": "*",
+        "squizlabs/php_codesniffer": "2.*"
     }
 }

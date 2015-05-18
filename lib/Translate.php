@@ -5,7 +5,8 @@ namespace JsonI18n;
  * Internationalization class to handle resource strings.
  * @author Vincent Diep
  */
-class Translate {
+class Translate
+{
     
     /**
      * The language to display
@@ -35,7 +36,7 @@ class Translate {
     public function addResource($file) {
         $contents = file_get_contents($file);
         
-        if($contents === false) {
+        if ($contents === false) {
             throw new \RuntimeException("Error reading file at $file.");
         }
         
@@ -73,11 +74,11 @@ class Translate {
      * @throws \LogicException If the value of the key is an array.
      */
     public function __($key, $lang = null) {
-        if($lang === null) {
+        if ($lang === null) {
             $lang = $this->lang;
         }
         
-        if(!isset($this->data['values'][$lang])) {
+        if (!isset($this->data['values'][$lang])) {
             throw new \OutOfBoundsException("Invalid language: $lang");
         }
         
@@ -108,11 +109,11 @@ class Translate {
      * @throws \InvalidArgumentException If the formatter strings is not a string or array.
      */
     public function _f($key, $strings, $lang = null) {
-        if($lang === null) {
+        if ($lang === null) {
             $lang = $this->lang;
         }
         
-        if(!isset($this->data['values'][$lang])) {
+        if (!isset($this->data['values'][$lang])) {
             throw new \OutOfBoundsException("Invalid language: $lang");
         }
         
@@ -120,15 +121,15 @@ class Translate {
             throw new \OutOfBoundsException("Invalid key: $key");
         }
         
-        if($strings === null) {
+        if ($strings === null) {
             $strings = '';
         }
         
-        if(is_string($strings) || is_float($strings) || is_int($strings)) {
+        if (is_string($strings) || is_float($strings) || is_int($strings)) {
             return sprintf($this->data['values'][$lang][$key], $strings);
         }
         
-        if(is_array($strings)) {
+        if (is_array($strings)) {
             return vsprintf($this->data['values'][$lang][$key], $strings);
         }
         
@@ -166,11 +167,11 @@ class Translate {
             throw new \OutOfBoundsException("Invalid group: $group");
         }
         
-        if($lang === null) {
+        if ($lang === null) {
             $lang = $this->lang;
         }
         
-        if(!isset($this->data['arrayGroups'][$group][$lang])) {
+        if (!isset($this->data['arrayGroups'][$group][$lang])) {
             throw new \OutOfBoundsException("Invalid language: $lang");
         }
         $keep = $this->data['arrayGroups'][$group][$lang];
@@ -183,14 +184,13 @@ class Translate {
             }
         } else {
             // Multi-dimensional array
-            foreach($arr as &$v) {
-
-                if(!array_key_exists($keep, $v)) {
+            foreach ($arr as &$v) {
+                if (!array_key_exists($keep, $v)) {
                     throw new \OutOfBoundsException("Invalid array index: $keep");
                 }
 
                 $v[$group] = $v[$keep];
-                foreach($this->data['arrayGroups'][$group] as $g) {
+                foreach ($this->data['arrayGroups'][$group] as $g) {
                     unset($v[$g]);
                 }
             }
