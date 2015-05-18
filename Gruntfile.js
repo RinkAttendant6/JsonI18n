@@ -54,4 +54,10 @@ module.exports = function (grunt) {
         "phpunit",
         "phpcpd"
     ]);
+    
+    grunt.registerTask('travis', [
+        "phplint",
+        "phpunit",
+        "phpcpd"
+    ]);
 };
