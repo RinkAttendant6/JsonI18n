@@ -153,8 +153,16 @@ class Translate {
      * @param string $lang The output language. Default is default language.
      * @throws \OutOfBoundsException If the group does not exist or if the array values do not contain the key in a given language
      */
-    public function localizeArray(array &$arr, $group, $lang = null) {
-        if(!isset($this->data['arrayGroups'][$group])) {
+    public function localizeArray(&$arr, $group, $lang = null) {
+        if (is_null($arr)) {
+            return;
+        }
+        
+        if (!is_array($arr)) {
+            throw new \InvalidArgumentException("Array must be an array or null, " . gettype($arr) . " given");
+        }
+        
+        if (!isset($this->data['arrayGroups'][$group])) {
             throw new \OutOfBoundsException("Invalid group: $group");
         }
         

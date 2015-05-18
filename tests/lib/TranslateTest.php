@@ -237,6 +237,18 @@ class TranslateTest extends \PHPUnit_Framework_TestCase {
         ));
     }
     
+    /**
+     * @covers JsonI18n\Translate::localizeArray
+     */
+    public function testLocalizeNullArray() {
+        $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
+        $arr1 = null;
+        $this->object->localizeArray($arr1, 'headsign');
+    }
+    
+    /**
+     * @covers JsonI18n\Translate::localizeArray
+     */
     public function testLocalizeArray1D() {
         $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
         
