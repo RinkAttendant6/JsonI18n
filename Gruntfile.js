@@ -11,6 +11,7 @@ module.exports = function (grunt) {
                 src: 'lib/*.php'
             },
             options: {
+                bin: 'vendor/bin/phpcs',
                 standard: 'PSR1',
                 showSniffCodes: true,
                 verbose: true
@@ -21,6 +22,7 @@ module.exports = function (grunt) {
                 dir: 'tests/'
             },
             options: {
+                bin: 'vendor/bin/phpunit',
                 colors: true,
                 coverage: true
             }
@@ -30,6 +32,7 @@ module.exports = function (grunt) {
                 dir: 'lib/'
             },
             options: {
+                bin: 'vendor/bin/phpcpd',
                 quiet: true
             }
         },
@@ -38,7 +41,17 @@ module.exports = function (grunt) {
                 dir: 'lib/'
             },
             options: {
+                bin: 'vendor/bin/phpmd',
                 rulesets: 'codesize,unusedcode,naming,design'
+            }
+        },
+        phpdcd: {
+            application: {
+                dir: 'lib/'
+            },
+            options: {
+                bin: 'vendor/bin/phpdcd',
+                verbose: 2
             }
         }
     });
@@ -47,6 +60,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-phplint');
     grunt.loadNpmTasks('grunt-phpunit');
     grunt.loadNpmTasks('grunt-phpcpd');
+    grunt.loadNpmTasks('grunt-phpdcd');
     grunt.loadNpmTasks('grunt-phpmd');
 
     grunt.registerTask("default", [
