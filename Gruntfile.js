@@ -42,6 +42,7 @@ module.exports = function (grunt) {
             },
             options: {
                 bin: 'vendor/bin/phpmd',
+                reportFormat: 'text',
                 rulesets: 'codesize,unusedcode,naming,design'
             }
         },
@@ -66,12 +67,14 @@ module.exports = function (grunt) {
     grunt.registerTask("default", [
         "phplint",
         "phpunit",
-        "phpcpd"
+        "phpcpd",
+        "phpmd"
     ]);
     
     grunt.registerTask('travis', [
         "phplint",
         "phpunit",
-        "phpcpd"
+        "phpcpd",
+        "phpmd"
     ]);
 };
