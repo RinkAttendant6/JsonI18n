@@ -65,7 +65,10 @@ class Translate
     protected function addResourceString($resource) {
         $data = json_decode($resource, true);
         if (json_last_error() !== \JSON_ERROR_NONE) {
-            throw new \InvalidArgumentException(json_last_error_msg(), json_last_error());
+            if (function_exists('json_last_error_msg')) {
+                throw new \InvalidArgumentException(json_last_error_msg(), json_last_error());
+            }
+            throw new \InvalidArgumentException("Error parsing JSON.", json_last_error());
         }
 
         $this->addResourceArray($data);
