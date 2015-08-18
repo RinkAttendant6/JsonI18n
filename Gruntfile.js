@@ -42,6 +42,7 @@ module.exports = function (grunt) {
             },
             options: {
                 bin: 'vendor/bin/phpmd',
+                reportFormat: 'text',
                 rulesets: 'codesize,unusedcode,naming,design'
             }
         },
@@ -53,6 +54,14 @@ module.exports = function (grunt) {
                 bin: 'vendor/bin/phpdcd',
                 verbose: 2
             }
+        },
+        phpdocumentor: {
+            dist: {
+                options: {
+                    command: 'run',
+                    directory: './lib/'
+                }
+            }
         }
     });
 
@@ -61,17 +70,20 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-phpunit');
     grunt.loadNpmTasks('grunt-phpcpd');
     grunt.loadNpmTasks('grunt-phpdcd');
+    grunt.loadNpmTasks('grunt-phpdocumentor');
     grunt.loadNpmTasks('grunt-phpmd');
 
     grunt.registerTask("default", [
         "phplint",
         "phpunit",
-        "phpcpd"
+        "phpcpd",
+        "phpmd"
     ]);
     
     grunt.registerTask('travis', [
         "phplint",
         "phpunit",
-        "phpcpd"
+        "phpcpd",
+        "phpmd"
     ]);
 };

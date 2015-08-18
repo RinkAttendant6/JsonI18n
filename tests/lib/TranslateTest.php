@@ -18,6 +18,12 @@ class TranslateTest extends \PHPUnit_Framework_TestCase {
     protected $object;
     
     /**
+     * Some sample JSON input
+     * @var string
+     */
+    protected $json = '{"arrayGroups": {"station": {"en-CA": "station_en","fr-CA": "station_fr"}},"values": {"en-CA": {"station": "Station","goodbye": "Have a good day!"},"fr-CA": {"station": "Station","goodbye": "Bonne journée!"}}}';
+    
+    /**
      * Some sample array data
      * @var array[]
      */
@@ -99,9 +105,24 @@ class TranslateTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @covers JsonI18n\Translate::addResource
+     * @covers JsonI18n\Translate::addResourceFile
+     * @covers JsonI18n\Translate::addResourceString
+     * @covers JsonI18n\Translate::addResourceArray
      */
-    public function testAddResource() {
+    public function testAddResourceFile() {
         $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
+
+        $this->assertArrayHasKey('values', \PHPUnit_Framework_Assert::readAttribute($this->object, 'data'));
+        $this->assertArrayHasKey('arrayGroups', \PHPUnit_Framework_Assert::readAttribute($this->object, 'data'));
+    }
+
+    /**
+     * @covers JsonI18n\Translate::addResource
+     * @covers JsonI18n\Translate::addResourceString
+     * @covers JsonI18n\Translate::addResourceArray
+     */
+    public function testAddResourceJson() {
+        $this->object->addResource($this->json, 'json');
 
         $this->assertArrayHasKey('values', \PHPUnit_Framework_Assert::readAttribute($this->object, 'data'));
         $this->assertArrayHasKey('arrayGroups', \PHPUnit_Framework_Assert::readAttribute($this->object, 'data'));
@@ -109,14 +130,36 @@ class TranslateTest extends \PHPUnit_Framework_TestCase {
     
     /**
      * @covers JsonI18n\Translate::addResource
-     * @expectedException PHPUnit_Framework_Error_Warning
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Invalid resource type
+     */
+    public function testAddResourceInvalidType() {
+        $this->object->addResource('foo', 'foo');
+    }
+    
+    /**
+     * @covers JsonI18n\Translate::addResourceFile
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage foo is not a file
      */
     public function testAddResourceInvalidFile() {
-        $this->object->addResource('');
+        $this->object->addResource('foo');
+    }
+    
+    /**
+     * @covers JsonI18n\Translate::addResourceString
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionCode \JSON_ERROR_SYNTAX
+     */
+    public function testAddResourceInvalidJson() {
+        $this->object->addResource('foo', 'json');
     }
     
     /**
      * @covers JsonI18n\Translate::addResource
+     * @covers JsonI18n\Translate::addResourceFile
+     * @covers JsonI18n\Translate::addResourceString
+     * @covers JsonI18n\Translate::addResourceArray
      */
     public function testAddMultipleResources() {
         $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');

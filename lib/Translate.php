@@ -1,4 +1,5 @@
 <?php
+
 namespace JsonI18n;
 
 /**
@@ -18,7 +19,10 @@ class Translate
      * Localization data
      * @var array
      */
-    protected $data = array();
+    protected $data = array(
+        'arrayGroups' => array(),
+        'values' => array()
+    );
     
     /**
      * Creates a new JsonI18n\Translate instance
@@ -29,18 +33,74 @@ class Translate
     }
     
     /**
+     * Adds a resource
+     * @param mixed $resource The resource to add
+     * @param string $type The resource type. Defaults to "file"
+     */
+    public function addResource($resource, $type = 'file') {
+        if (is_array($resource)) {
+            $this->addResourceArray($resource);
+            return;
+        }
+
+        if (is_string($resource)) {
+            switch ($type) {
+                case 'json':
+                    $this->addResourceString($resource);
+                    break;
+                case 'file':
+                    $this->addResourceFile($resource);
+                    break;
+                default:
+                    throw new \InvalidArgumentException("Invalid resource type");
+            }
+        }
+    }
+
+    /**
+     * Adds a resource represented in a JSON string
+     * @param string $resource The resource as JSON data
+     * @throws \InvalidArgumentException If the resource is not valid JSON
+     */
+    protected function addResourceString($resource) {
+        $data = json_decode($resource, true);
+        if (json_last_error() !== \JSON_ERROR_NONE) {
+            if (function_exists('json_last_error_msg')) {
+                throw new \InvalidArgumentException(json_last_error_msg(), json_last_error());
+            }
+            throw new \InvalidArgumentException("Error parsing JSON.", json_last_error());
+        }
+
+        $this->addResourceArray($data);
+    }
+
+    /**
+     * Adds a resource array
+     * @param array $resource The resource array
+     */
+    protected function addResourceArray(array $resource) {
+        $this->data['arrayGroups'] = array_replace_recursive($this->data['arrayGroups'], $resource['arrayGroups']);
+        $this->data['values'] = array_replace_recursive($this->data['arrayGroups'], $resource['values']);
+    }
+
+    /**
      * Adds a resource file
      * @param string $file The path to the resource file
+     * @throws \InvalidArgumentException If the filename provided is not a file
      * @throws \RuntimeException If the file could not be read
      */
-    public function addResource($file) {
+    protected function addResourceFile($file) {
+        if (!is_file($file)) {
+            throw new \InvalidArgumentException("$file is not a file");
+        }
+        
         $contents = file_get_contents($file);
         
         if ($contents === false) {
             throw new \RuntimeException("Error reading file at $file.");
         }
         
-        $this->data = array_replace_recursive($this->data, json_decode($contents, true));
+        $this->addResourceString($contents);
     }
     
     /**
