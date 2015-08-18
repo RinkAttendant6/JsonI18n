@@ -263,6 +263,14 @@ class Translate
      * @codeCoverageIgnore
      */
     public function debug() {
-        print_r($this->data);
+        print_r($this->__debugInfo());
+    }
+    
+    /**
+     * Magic debug method
+     * @codeCoverageIgnore
+     */
+    public function __debugInfo() {
+        return $this->data;
     }
 }

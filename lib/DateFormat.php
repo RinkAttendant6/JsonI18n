@@ -134,4 +134,12 @@ class DateFormat
             }
         }
     }
+    
+    /**
+     * Magic debug method
+     * @codeCoverageIgnore
+     */
+    public function __debugInfo() {
+        return $this->formatters;
+    }
 }
