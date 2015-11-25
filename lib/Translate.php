@@ -79,8 +79,11 @@ class Translate
      * @param array $resource The resource array
      */
     protected function addResourceArray(array $resource) {
-        $this->data['arrayGroups'] = array_replace_recursive($this->data['arrayGroups'], $resource['arrayGroups']);
-        $this->data['values'] = array_replace_recursive($this->data['arrayGroups'], $resource['values']);
+        $arrayGroups = isset($resource['arrayGroups']) && is_array($resource['arrayGroups']) ? $resource['arrayGroups'] : array();
+        $values = isset($resource['values']) && is_array($resource['values']) ? $resource['values'] : array();
+        
+        $this->data['arrayGroups'] = array_replace_recursive($this->data['arrayGroups'], $arrayGroups);
+        $this->data['values'] = array_replace_recursive($this->data['values'], $values);
     }
 
     /**
