@@ -21,12 +21,9 @@
             "url": "https://github.com/RinkAttendant6/JsonI18n"
         }
     ],
-    "suggest": {
-        "geraintluff/jsv4": "dev-master"
-    },
     "require-dev": {
         "phpmd/phpmd" : "@stable",
-        "phpunit/phpunit": "4.7.*",
+        "phpunit/phpunit": "4.8.*",
         "sebastian/phpcpd": "*",
         "sebastian/phpdcd": "*",
         "squizlabs/php_codesniffer": "2.*"
