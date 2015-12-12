@@ -26,7 +26,7 @@ class Resource implements \ArrayAccess, \Countable, \IteratorAggregate, \Seriali
      * @param string $locale The locale
      * @param string[] $data The translation data
      */
-    public function __construct($locale, array $data) {
+    public function __construct($locale, array $data = array()) {
         $this->data = $data;
         $this->setLocale($locale);
     }
@@ -64,7 +64,7 @@ class Resource implements \ArrayAccess, \Countable, \IteratorAggregate, \Seriali
      * @return string
      */
     public function getLocale() {
-        return \Locale::composeLocale($this->locale);
+        return str_replace('_', '-', \Locale::composeLocale($this->locale));
     }
 
     /**
@@ -146,7 +146,7 @@ class Resource implements \ArrayAccess, \Countable, \IteratorAggregate, \Seriali
      * @return string
      */
     public function jsonSerialize() {
-        $output = array($this->language => $this->data);
+        $output = array($this->getLocale() => $this->data);
         return json_encode($output, JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG);
     }
 
