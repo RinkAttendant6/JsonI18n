@@ -376,6 +376,7 @@ class TranslateTest extends \PHPUnit_Framework_TestCase
     }
     
     /**
+     * @covers JsonI18n\Translate::flatten
      * @covers JsonI18n\Translate::localizeDeepArray
      * @expectedException \OutOfBoundsException
      * @expectedExceptionMessage Invalid group: endpoint
@@ -387,6 +388,7 @@ class TranslateTest extends \PHPUnit_Framework_TestCase
     }
     
     /**
+     * @covers JsonI18n\Translate::flatten
      * @covers JsonI18n\Translate::localizeDeepArray
      * @expectedException \OutOfBoundsException
      * @expectedExceptionMessage Invalid language: zh-CN
@@ -398,6 +400,7 @@ class TranslateTest extends \PHPUnit_Framework_TestCase
     }
     
     /**
+     * @covers JsonI18n\Translate::flatten
      * @covers JsonI18n\Translate::localizeDeepArray
      * @expectedException \OutOfBoundsException
      * @expectedExceptionMessage Invalid array index: invalid
@@ -414,5 +417,13 @@ class TranslateTest extends \PHPUnit_Framework_TestCase
      */
     public function testLocalizeArrayInvalidDepth() {
         $this->object->localizeDeepArray($this->arr2D, 'headsign', -1);
+    }
+
+    /**
+     * @covers JsonI18n\Translate::localizeDeepArray
+     * @expectedException \PHPUnit_Framework_Error
+     */
+    public function testLocalizeArrayExceedDepth() {
+        $this->object->localizeDeepArray($this->arr1D, 'headsign', PHP_INT_MAX);
     }
 }
