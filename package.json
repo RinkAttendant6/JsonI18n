@@ -16,7 +16,6 @@
     "grunt-phpcpd": "^0.2.0",
     "grunt-phpcs": "^0.4.0",
     "grunt-phpdcd": "^0.1.0",
-    "grunt-phpdocumentor": "^0.4.1",
     "grunt-phplint": "0.0.8",
     "grunt-phpmd": "^0.1.1",
     "grunt-phpunit": "^0.3.6",

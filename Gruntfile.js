@@ -56,14 +56,14 @@ module.exports = function (grunt) {
                 bin: 'vendor/bin/phpdcd',
                 verbose: 2
             }
-        },
-        phpdocumentor: {
-            dist: {
-                options: {
-                    command: 'run',
-                    directory: './lib/'
-                }
-            }
+        // },
+        // phpdocumentor: {
+        //     dist: {
+        //         options: {
+        //             command: 'run',
+        //             directory: './lib/'
+        //         }
+        //     }
         }
     });
 
