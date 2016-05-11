@@ -315,6 +315,7 @@ class TranslateTest extends \PHPUnit_Framework_TestCase
     }
     
     /**
+     * @covers JsonI18n\Translate::flatten
      * @covers JsonI18n\Translate::localizeDeepArray
      */
     public function testLocalize1DArray() {
@@ -330,6 +331,7 @@ class TranslateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers JsonI18n\Translate::flatten
      * @covers JsonI18n\Translate::parseMetadata
      * @covers JsonI18n\Translate::localizeDeepArray
      */
@@ -353,6 +355,7 @@ class TranslateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers JsonI18n\Translate::flatten
      * @covers JsonI18n\Translate::localizeDeepArray
      */
     public function testLocalize3DArray() {
@@ -403,5 +406,13 @@ class TranslateTest extends \PHPUnit_Framework_TestCase
         $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
         
         $this->object->localizeDeepArray($this->arr2D, 'headsign', 1, 'en-US');
+    }
+
+    /**
+     * @covers JsonI18n\Translate::localizeDeepArray
+     * @expectedException \InvalidArgumentException
+     */
+    public function testLocalizeArrayInvalidDepth() {
+        $this->object->localizeDeepArray($this->arr2D, 'headsign', -1);
     }
 }
