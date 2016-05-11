@@ -108,6 +108,22 @@ of these methods. For example:
 $t->_e('bye', 'fr-CA');
 ```
 
+### Localizing arrays
+
+In addition to localizing strings, JsonI18n can localize arrays. Values for each language must be in separate keys in the array. The `localizeDeepArray` method will collapse the groups as necessary, returning an array with fewer keys.
+
+```php
+$input = [
+    'label_en_CA' => 'Name',
+    'label_fr_CA' => 'Nom'
+];
+$output = $t->localizeDeepArray($input, 'label', 0, 'en-CA');
+
+// $output will be: ['label' => 'Name']
+```
+
+The `$depth` argument of the method can be set to 1 for two-dimensional arrays, 2 for three-dimensional arrays, and so on. This is useful for localizing data returned from a database via PDO, where different fetch types can return arrays of 1, 2, or 3 dimensions.
+
 ### Debugging
 
 To view all of the data in the JsonI18n object, call the `debug()` method.
