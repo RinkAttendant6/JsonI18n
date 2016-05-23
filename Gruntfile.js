@@ -2,6 +2,8 @@
 module.exports = function (grunt) {
     'use strict';
 
+    require('time-grunt')(grunt);
+
     grunt.initConfig({
         phplint: {
             application: ["lib/*.php", "tests/**/*.php"]
@@ -54,24 +56,16 @@ module.exports = function (grunt) {
                 bin: 'vendor/bin/phpdcd',
                 verbose: 2
             }
-        },
-        phpdocumentor: {
-            dist: {
-                options: {
-                    command: 'run',
-                    directory: './lib/'
-                }
-            }
+         },
+         phpdoc: {
+             dist: {
+                 src: 'lib/',
+                 dest: 'docs/'
+             }
         }
     });
 
-    grunt.loadNpmTasks('grunt-phpcs');
-    grunt.loadNpmTasks('grunt-phplint');
-    grunt.loadNpmTasks('grunt-phpunit');
-    grunt.loadNpmTasks('grunt-phpcpd');
-    grunt.loadNpmTasks('grunt-phpdcd');
-    grunt.loadNpmTasks('grunt-phpdocumentor');
-    grunt.loadNpmTasks('grunt-phpmd');
+    require('load-grunt-tasks')(grunt);
 
     grunt.registerTask("default", [
         "phplint",
@@ -79,6 +73,8 @@ module.exports = function (grunt) {
         "phpcpd",
         "phpmd"
     ]);
+
+    grunt.registerTask("lint", ["phplint", "phpcpd", "phpcs"]);
     
     grunt.registerTask('travis', [
         "phplint",

@@ -8,21 +8,23 @@ namespace JsonI18n;
  */
 class Translate
 {
-    
     /**
-     * The language to display
+     * The default output language
      * @var string
      */
     protected $lang;
     
     /**
-     * Localization data
-     * @var array
+     * Set of groups to flatten
+     * @var array[]
      */
-    protected $data = array(
-        'arrayGroups' => array(),
-        'values' => array()
-    );
+    protected $arrayGroups;
+    
+    /**
+     * Set of resources
+     * @var Resource[]
+     */
+    protected $data;
     
     /**
      * Creates a new JsonI18n\Translate instance
@@ -79,11 +81,54 @@ class Translate
      * @param array $resource The resource array
      */
     protected function addResourceArray(array $resource) {
-        $arrayGroups = isset($resource['arrayGroups']) && is_array($resource['arrayGroups']) ? $resource['arrayGroups'] : array();
-        $values = isset($resource['values']) && is_array($resource['values']) ? $resource['values'] : array();
-        
-        $this->data['arrayGroups'] = array_replace_recursive($this->data['arrayGroups'], $arrayGroups);
-        $this->data['values'] = array_replace_recursive($this->data['values'], $values);
+        foreach ($resource as $locale => $value) {
+            if ($locale === '@metadata') {
+                $this->parseMetadata($value);
+                continue;
+            }
+            $this->addSubresource($value, $locale);
+        }
+    }
+    
+    /**
+     * Adds a sub-resource
+     * @param mixed $subresource The sub-resource value
+     * @param string $locale
+     */
+    public function addSubresource($subresource, $locale) {
+        if ($subresource instanceof Resource) {
+            $resource = $subresource;
+        } elseif (is_string($subresource)) {
+            $resource = ResourceBuilder::fromFile($subresource, $locale);
+        } elseif (is_array($subresource)) {
+            $resource = ResourceBuilder::fromArray($subresource, $locale);
+        } else {
+            throw new \InvalidArgumentException('Invalid subresource');
+        }
+
+        if (isset($this->data[$locale])) {
+            $this->data[$locale]->merge($resource);
+        } else {
+            $this->data[$locale] = $resource;
+        }
+    }
+    
+    /**
+     * Parses resource file metadata
+     * @param array $metadata The metadata
+     */
+    protected function parseMetadata(array $metadata) {
+        if (isset($metadata['arrayGroups'])) {
+            foreach ($metadata['arrayGroups'] as $name => $values) {
+                if (!isset($this->arrayGroups[$name])) {
+                    $this->arrayGroups[$name] = array();
+                }
+                
+                foreach ($values as $locale => $keyName) {
+                    $this->arrayGroups[$name][$locale] = $keyName;
+                }
+            }
+        }
     }
 
     /**
@@ -141,15 +186,15 @@ class Translate
             $lang = $this->lang;
         }
         
-        if (!isset($this->data['values'][$lang])) {
+        if (!isset($this->data[$lang])) {
             throw new \OutOfBoundsException("Invalid language: $lang");
         }
         
-        if (!isset($this->data['values'][$lang][$key])) {
+        if (!isset($this->data[$lang][$key])) {
             throw new \OutOfBoundsException("Invalid key: $key");
         }
         
-        return $this->data['values'][$lang][$key];
+        return $this->data[$lang][$key];
     }
 
     /**
@@ -176,11 +221,11 @@ class Translate
             $lang = $this->lang;
         }
         
-        if (!isset($this->data['values'][$lang])) {
+        if (!isset($this->data[$lang])) {
             throw new \OutOfBoundsException("Invalid language: $lang");
         }
         
-        if (!isset($this->data['values'][$lang][$key])) {
+        if (!isset($this->data[$lang][$key])) {
             throw new \OutOfBoundsException("Invalid key: $key");
         }
         
@@ -189,11 +234,11 @@ class Translate
         }
         
         if (is_string($strings) || is_float($strings) || is_int($strings)) {
-            return sprintf($this->data['values'][$lang][$key], $strings);
+            return sprintf($this->data[$lang][$key], $strings);
         }
         
         if (is_array($strings)) {
-            return vsprintf($this->data['values'][$lang][$key], $strings);
+            return vsprintf($this->data[$lang][$key], $strings);
         }
         
         throw new \InvalidArgumentException('Strings must be a string or array to return a formatted localized string.');
@@ -209,56 +254,76 @@ class Translate
     public function _ef($key, $strings, $lang = null) {
         echo $this->_f($key, $strings, $lang);
     }
-    
+
     /**
-     * Localizes an array by "flattening" a group
+     * Localizes a multidimensional array
+     * @param array $arr The array to localize
+     * @param string $group The name of the group of fields to flatten
+     * @param int $depth The depth of the array
+     * @param string $lang The output language. Default is default language.
+     * @return array
+     */
+    public function localizeDeepArray($arr, $group, $depth = 1, $lang = null) {
+        if (is_null($arr)) {
+            return null;
+        }
+        
+        if ($depth < 0) {
+            throw new \InvalidArgumentException("Depth must be a non-negative integer, $depth given");
+        }
+        
+        if ($depth) {
+            foreach ($arr as $key => &$value) {
+                $value = $this->localizeDeepArray($value, $group, $depth - 1, $lang);
+            }
+            unset($value);
+            return $arr;
+        }
+        
+        return $this->flatten($arr, $group, $lang);
+    }
+
+    /**
+     * Flattens an array group
      * @param array $arr The array to localize
      * @param string $group The name of the group of fields to flatten
      * @param string $lang The output language. Default is default language.
+     * @return array
      * @throws \OutOfBoundsException If the group does not exist or if the array values do not contain the key in a given language
      */
-    public function localizeArray(&$arr, $group, $lang = null) {
+    private function flatten($arr, $group, $lang) {
         if (is_null($arr)) {
-            return;
+            return null;
         }
-        
+
         if (!is_array($arr)) {
             throw new \InvalidArgumentException("Array must be an array or null, " . gettype($arr) . " given");
         }
-        
-        if (!isset($this->data['arrayGroups'][$group])) {
+
+        if (!isset($this->arrayGroups[$group])) {
             throw new \OutOfBoundsException("Invalid group: $group");
         }
-        
+
         if ($lang === null) {
             $lang = $this->lang;
         }
-        
-        if (!isset($this->data['arrayGroups'][$group][$lang])) {
+
+        if (!isset($this->arrayGroups[$group][$lang])) {
             throw new \OutOfBoundsException("Invalid language: $lang");
         }
-        $keep = $this->data['arrayGroups'][$group][$lang];
         
-        if (array_key_exists($keep, $arr)) {
-            // One dimensional array
-            $arr[$group] = $arr[$keep];
-            foreach ($this->data['arrayGroups'][$group] as $g) {
-                unset($arr[$g]);
-            }
-        } else {
-            // Multi-dimensional array
-            foreach ($arr as &$v) {
-                if (!array_key_exists($keep, $v)) {
-                    throw new \OutOfBoundsException("Invalid array index: $keep");
-                }
-
-                $v[$group] = $v[$keep];
-                foreach ($this->data['arrayGroups'][$group] as $g) {
-                    unset($v[$g]);
-                }
-            }
-            unset($v);
+        $keep = $this->arrayGroups[$group][$lang];
+        
+        if (!array_key_exists($keep, $arr)) {
+            throw new \OutOfBoundsException("Invalid array index: $keep");
         }
+
+        $arr[$group] = $arr[$keep];
+        foreach ($this->arrayGroups[$group] as $g) {
+            unset($arr[$g]);
+        }
+        
+        return $arr;
     }
 
     /**

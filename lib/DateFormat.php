@@ -33,7 +33,11 @@ class DateFormat
         
         $this->locale = $locale;
     }
-    
+
+    /**
+     * Adds a resource
+     * @param string $file The resource to add
+     */
     public function addResource($file) {
         $contents = file_get_contents($file);
         
@@ -67,7 +71,7 @@ class DateFormat
     
     /**
      * Formats a date/time
-     * @param DateTime|string $datetime The date/time to format. If a string is passed, it will be used to create a DateTime object.
+     * @param \DateTime|string $datetime The date/time to format. If a string is passed, it will be used to create a DateTime object.
      * @param string $formatter The name of the formatter pattern to use
      * @param string $locale The locale for format in. Defaults to default locale.
      * @return string The formatted date

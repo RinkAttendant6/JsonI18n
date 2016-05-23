@@ -1,21 +1,21 @@
 {
-    "arrayGroups": {
-        "station": {
-            "en-CA": "station_en",
-            "fr-CA": "station_fr"
+    "@metadata": {
+        "arrayGroups": {
+            "station": {
+                "en-CA": "station_en",
+                "fr-CA": "station_fr"
+            }
         }
     },
-    "values": {
-        "en-CA": {
-            "documentTitleTag": "Routes and maps",
-            "station": "Station",
-            "goodbye": "Have a good day!"
-        },
+    "en-CA": {
+        "documentTitleTag": "Routes and maps",
+        "station": "Station",
+        "goodbye": "Have a good day!"
+    },
 
-        "fr-CA": {
-            "documentTitleTag": "Circuits et cartes",
-            "station": "Station",
-            "goodbye": "Bonne journée!"
-        }
+    "fr-CA": {
+        "documentTitleTag": "Circuits et cartes",
+        "station": "Station",
+        "goodbye": "Bonne journée!"
     }
 }
