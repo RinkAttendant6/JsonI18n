@@ -24,7 +24,7 @@
     "require-dev": {
         "phpmd/phpmd" : "@stable",
         "phpunit/phpunit": "4.8.*",
-        "sebastian/phpcpd": "*",
+        "sebastian/phpcpd": "2.0.*",
         "sebastian/phpdcd": "*",
         "squizlabs/php_codesniffer": "2.*"
     }

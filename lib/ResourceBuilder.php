@@ -8,6 +8,12 @@ namespace JsonI18n;
  */
 class ResourceBuilder
 {
+    /**
+     * Creates a Resource from a PHP array
+     * @param array $data Resource data
+     * @param $locale The locale
+     * @return Resource
+     */
     public static function fromArray(array $data, $locale) {
         return new Resource($locale, $data);
     }
