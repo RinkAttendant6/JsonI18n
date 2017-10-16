@@ -11,7 +11,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "JsonI18n\\": "lib/",
+            "JsonI18n\\": "src/",
             "JsonI18n\\Tests\\": "tests/"
         }
     },
@@ -22,6 +22,7 @@
         }
     ],
     "require-dev": {
+        "pds/skeleton": "1.0.0",
         "phpmd/phpmd" : "@stable",
         "phpunit/phpunit": "4.8.*",
         "sebastian/phpcpd": "2.0.*",
