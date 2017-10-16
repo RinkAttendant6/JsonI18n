@@ -11,10 +11,11 @@ class ResourceBuilder
     /**
      * Creates a Resource from a PHP array
      * @param array $data Resource data
-     * @param $locale The locale
+     * @param string $locale The locale
      * @return Resource
      */
-    public static function fromArray(array $data, $locale) {
+    public static function fromArray(array $data, $locale)
+    {
         return new Resource($locale, $data);
     }
     
@@ -24,7 +25,8 @@ class ResourceBuilder
      * @param string $locale The locale
      * @return Resource
      */
-    public static function fromString($input, $locale) {
+    public static function fromString($input, $locale)
+    {
         $data = json_decode($input, true);
         if (json_last_error() !== \JSON_ERROR_NONE) {
             if (function_exists('json_last_error_msg')) {
@@ -42,7 +44,8 @@ class ResourceBuilder
      * @param string $locale The locale
      * @return Resource
      */
-    public static function fromFile($file, $locale) {
+    public static function fromFile($file, $locale)
+    {
         if (!is_file($file)) {
             throw new \InvalidArgumentException("$file is not a file");
         }

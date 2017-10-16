@@ -8,7 +8,6 @@ namespace JsonI18n;
  */
 class DateFormat
 {
-    
     /**
      * The locale to display
      * @var string
@@ -26,7 +25,8 @@ class DateFormat
      * @param string $locale The default output locale
      * @throws \InvalidArgumentException If the locale parameter is empty
      */
-    public function __construct($locale) {
+    public function __construct($locale)
+    {
         if (empty($locale)) {
             throw new \InvalidArgumentException('Invalid locale.');
         }
@@ -38,7 +38,8 @@ class DateFormat
      * Adds a resource
      * @param string $file The resource to add
      */
-    public function addResource($file) {
+    public function addResource($file)
+    {
         $contents = file_get_contents($file);
         
         if ($contents === false) {
@@ -52,7 +53,8 @@ class DateFormat
      * Processes the resource file data
      * @param array $data The data from the resource file
      */
-    private function processData(array $data) {
+    private function processData(array $data)
+    {
         foreach ($data['formatters'] as $locale => $f) {
             if (!isset($this->formatters[$locale])) {
                 $this->formatters[$locale] = array();
@@ -77,8 +79,8 @@ class DateFormat
      * @return string The formatted date
      * @throws \InvalidArgumentException If the locale or formatter name is invalid.
      */
-    public function format($datetime, $formatter, $locale = null) {
-        
+    public function format($datetime, $formatter, $locale = null)
+    {
         if ($locale === null) {
             $locale = $this->locale;
         }
@@ -105,7 +107,8 @@ class DateFormat
      * @return \IntlDateFormatter The formatter object
      * @throws \InvalidArgumentException If the locale or formatter name is invalid.
      */
-    public function getFormatter($formatter, $locale = null) {
+    public function getFormatter($formatter, $locale = null)
+    {
         if ($locale === null) {
             $locale = $this->locale;
         }
@@ -125,7 +128,8 @@ class DateFormat
      * Debug function
      * @codeCoverageIgnore
      */
-    public function debug() {
+    public function debug()
+    {
         foreach ($this->formatters as $locale => $formats) {
             echo "\n# $locale\n";
             foreach ($formats as $name => $format) {
@@ -143,7 +147,8 @@ class DateFormat
      * Magic debug method
      * @codeCoverageIgnore
      */
-    public function __debugInfo() {
+    public function __debugInfo()
+    {
         return $this->formatters;
     }
 }

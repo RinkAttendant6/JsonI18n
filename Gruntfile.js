@@ -13,10 +13,7 @@ module.exports = grunt => {
                 src: 'src/*.php'
             },
             options: {
-                bin: 'vendor/bin/phpcs',
-                standard: 'PSR1',
-                showSniffCodes: true,
-                verbose: true
+                bin: 'vendor/bin/phpcs'
             }
         },
         phpunit: {

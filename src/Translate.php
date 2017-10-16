@@ -30,7 +30,8 @@ class Translate
      * Creates a new JsonI18n\Translate instance
      * @param string $lang The default output language
      */
-    public function __construct($lang) {
+    public function __construct($lang)
+    {
         $this->setLanguage($lang);
     }
     
@@ -39,7 +40,8 @@ class Translate
      * @param mixed $resource The resource to add
      * @param string $type The resource type. Defaults to "file"
      */
-    public function addResource($resource, $type = 'file') {
+    public function addResource($resource, $type = 'file')
+    {
         if (is_array($resource)) {
             $this->addResourceArray($resource);
             return;
@@ -64,7 +66,8 @@ class Translate
      * @param string $resource The resource as JSON data
      * @throws \InvalidArgumentException If the resource is not valid JSON
      */
-    protected function addResourceString($resource) {
+    protected function addResourceString($resource)
+    {
         $data = json_decode($resource, true);
         if (json_last_error() !== \JSON_ERROR_NONE) {
             if (function_exists('json_last_error_msg')) {
@@ -80,7 +83,8 @@ class Translate
      * Adds a resource array
      * @param array $resource The resource array
      */
-    protected function addResourceArray(array $resource) {
+    protected function addResourceArray(array $resource)
+    {
         foreach ($resource as $locale => $value) {
             if ($locale === '@metadata') {
                 $this->parseMetadata($value);
@@ -95,7 +99,8 @@ class Translate
      * @param mixed $subresource The sub-resource value
      * @param string $locale
      */
-    public function addSubresource($subresource, $locale) {
+    public function addSubresource($subresource, $locale)
+    {
         if ($subresource instanceof Resource) {
             $resource = $subresource;
         } elseif (is_string($subresource)) {
@@ -117,7 +122,8 @@ class Translate
      * Parses resource file metadata
      * @param array $metadata The metadata
      */
-    protected function parseMetadata(array $metadata) {
+    protected function parseMetadata(array $metadata)
+    {
         if (isset($metadata['arrayGroups'])) {
             foreach ($metadata['arrayGroups'] as $name => $values) {
                 if (!isset($this->arrayGroups[$name])) {
@@ -137,7 +143,8 @@ class Translate
      * @throws \InvalidArgumentException If the filename provided is not a file
      * @throws \RuntimeException If the file could not be read
      */
-    protected function addResourceFile($file) {
+    protected function addResourceFile($file)
+    {
         if (!is_file($file)) {
             throw new \InvalidArgumentException("$file is not a file");
         }
@@ -156,7 +163,8 @@ class Translate
      * @param string $lang The language
      * @throws \InvalidArgumentException If the langauge is invalid
      */
-    public function setLanguage($lang) {
+    public function setLanguage($lang)
+    {
         if (!is_string($lang) || empty($lang)) {
             throw new \InvalidArgumentException("Invalid language $lang");
         }
@@ -168,7 +176,8 @@ class Translate
      * Returns the current language
      * @return string
      */
-    public function getLanguage() {
+    public function getLanguage()
+    {
         return $this->lang;
     }
     
@@ -181,7 +190,8 @@ class Translate
      * @throws \OutOfBoundsException If the language or key is invalid.
      * @throws \LogicException If the value of the key is an array.
      */
-    public function __($key, $lang = null) {
+    public function __($key, $lang = null)
+    {
         if ($lang === null) {
             $lang = $this->lang;
         }
@@ -203,7 +213,8 @@ class Translate
      * @param string $lang The output language. Default is default language.
      * @codeCoverageIgnore
      */
-    public function _e($key, $lang = null) {
+    public function _e($key, $lang = null)
+    {
         echo $this->__($key, $lang);
     }
     
@@ -216,7 +227,8 @@ class Translate
      * @throws \OutOfBoundsException If the language or key is invalid.
      * @throws \InvalidArgumentException If the formatter strings is not a string or array.
      */
-    public function _f($key, $strings, $lang = null) {
+    public function _f($key, $strings, $lang = null)
+    {
         if ($lang === null) {
             $lang = $this->lang;
         }
@@ -251,7 +263,8 @@ class Translate
      * @param string $lang The output language. Default is default language.
      * @codeCoverageIgnore
      */
-    public function _ef($key, $strings, $lang = null) {
+    public function _ef($key, $strings, $lang = null)
+    {
         echo $this->_f($key, $strings, $lang);
     }
 
@@ -263,7 +276,8 @@ class Translate
      * @param string $lang The output language. Default is default language.
      * @return array
      */
-    public function localizeDeepArray($arr, $group, $depth = 1, $lang = null) {
+    public function localizeDeepArray($arr, $group, $depth = 1, $lang = null)
+    {
         if (is_null($arr)) {
             return null;
         }
@@ -291,7 +305,8 @@ class Translate
      * @return array
      * @throws \OutOfBoundsException If the group does not exist or if the array values do not contain the key in a given language
      */
-    private function flatten($arr, $group, $lang) {
+    private function flatten($arr, $group, $lang)
+    {
         if (is_null($arr)) {
             return null;
         }
@@ -330,7 +345,8 @@ class Translate
      * Debug function to print out all localization data
      * @codeCoverageIgnore
      */
-    public function debug() {
+    public function debug()
+    {
         print_r($this->__debugInfo());
     }
     
@@ -338,7 +354,8 @@ class Translate
      * Magic debug method
      * @codeCoverageIgnore
      */
-    public function __debugInfo() {
+    public function __debugInfo()
+    {
         return $this->data;
     }
 }
