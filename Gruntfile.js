@@ -1,16 +1,16 @@
 /* jshint: node:true */
-module.exports = function (grunt) {
+module.exports = grunt => {
     'use strict';
 
     require('time-grunt')(grunt);
 
     grunt.initConfig({
         phplint: {
-            application: ["lib/*.php", "tests/**/*.php"]
+            application: ['src/*.php', 'tests/**/*.php']
         },
         phpcs: {
             application: {
-                src: 'lib/*.php'
+                src: 'src/*.php'
             },
             options: {
                 bin: 'vendor/bin/phpcs',
@@ -31,7 +31,7 @@ module.exports = function (grunt) {
         },
         phpcpd: {
             application: {
-                dir: 'lib/'
+                dir: 'src/'
             },
             options: {
                 bin: 'vendor/bin/phpcpd',
@@ -40,7 +40,7 @@ module.exports = function (grunt) {
         },
         phpmd: {
             application: {
-                dir: 'lib/'
+                dir: 'src/'
             },
             options: {
                 bin: 'vendor/bin/phpmd',
@@ -50,18 +50,18 @@ module.exports = function (grunt) {
         },
         phpdcd: {
             application: {
-                dir: 'lib/'
+                dir: 'src/'
             },
             options: {
                 bin: 'vendor/bin/phpdcd',
                 verbose: 2
             }
          },
-         phpdoc: {
-             dist: {
-                 src: 'lib/',
-                 dest: 'docs/'
-             }
+        phpdoc: {
+            dist: {
+                src: 'src/',
+                dest: 'docs/'
+            }
         }
     });
 
