@@ -32,7 +32,6 @@
         "phpmd/phpmd" : "@stable",
         "phpunit/phpunit": "^6.4",
         "sebastian/phpcpd": "^3.0",
-        "sebastian/phpdcd": "*",
         "squizlabs/php_codesniffer": "2.*"
     }
 }
