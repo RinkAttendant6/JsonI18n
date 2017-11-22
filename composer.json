@@ -21,11 +21,17 @@
             "url": "https://github.com/RinkAttendant6/JsonI18n"
         }
     ],
+    "config": {
+        "sort-packages": true
+    },
+    "require": {
+        "php": "^7.1"
+    },
     "require-dev": {
         "pds/skeleton": "1.0.0",
         "phpmd/phpmd" : "@stable",
-        "phpunit/phpunit": "4.8.*",
-        "sebastian/phpcpd": "2.0.*",
+        "phpunit/phpunit": "^6.4",
+        "sebastian/phpcpd": "^3.0",
         "sebastian/phpdcd": "*",
         "squizlabs/php_codesniffer": "2.*"
     }

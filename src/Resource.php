@@ -1,18 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JsonI18n;
 
 /**
  * A localization resource
  * @author Vincent Diep
  */
-class Resource implements \ArrayAccess, \Countable, \IteratorAggregate, \Serializable
+class Resource implements \ArrayAccess, \Countable, \IteratorAggregate, \JsonSerializable, \Serializable
 {
     /**
      * The translation values
      * @var string[]
      */
-    private $data = array();
+    private $data = [];
     
     /**
      * The locale of the resource
@@ -26,7 +28,7 @@ class Resource implements \ArrayAccess, \Countable, \IteratorAggregate, \Seriali
      * @param string $locale The locale
      * @param string[] $data The translation data
      */
-    public function __construct($locale, array $data = array())
+    public function __construct(string $locale, array $data = [])
     {
         $this->data = $data;
         $this->setLocale($locale);
@@ -37,7 +39,7 @@ class Resource implements \ArrayAccess, \Countable, \IteratorAggregate, \Seriali
      * @param string $json
      * @return \self
      */
-    public static function fromJson($json)
+    public static function fromJson(string $json): self
     {
         $input = json_decode($json, true);
         $data = reset($input);
@@ -51,7 +53,7 @@ class Resource implements \ArrayAccess, \Countable, \IteratorAggregate, \Seriali
      * @param string $locale The locale
      * @throws \InvalidArgumentException When provided with an invalid locale
      */
-    private function setLocale($locale)
+    private function setLocale(string $locale)
     {
         $arr = \Locale::parseLocale($locale);
         
@@ -66,7 +68,7 @@ class Resource implements \ArrayAccess, \Countable, \IteratorAggregate, \Seriali
      * Gets the locale of the resource
      * @return string
      */
-    public function getLocale()
+    public function getLocale(): string
     {
         return str_replace('_', '-', \Locale::composeLocale($this->locale));
     }
@@ -75,7 +77,7 @@ class Resource implements \ArrayAccess, \Countable, \IteratorAggregate, \Seriali
      * Gets the language of the resource
      * @return string
      */
-    public function getLanguage()
+    public function getLanguage(): string
     {
         return $this->locale['language'];
     }
@@ -85,7 +87,7 @@ class Resource implements \ArrayAccess, \Countable, \IteratorAggregate, \Seriali
      * @param array $data Values to add
      * @param boolean $overwrite Whether the new array should overwrite already existing values
      */
-    public function addData(array $data, $overwrite = true)
+    public function addData(array $data, bool $overwrite = true): void
     {
         if ($overwrite) {
             $this->data = array_merge($this->data, $data);
@@ -98,7 +100,7 @@ class Resource implements \ArrayAccess, \Countable, \IteratorAggregate, \Seriali
      * Returns all translation values
      * @return string[]
      */
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }
@@ -108,7 +110,7 @@ class Resource implements \ArrayAccess, \Countable, \IteratorAggregate, \Seriali
      * @param self $resource
      * @param boolean $overwrite Whether the new resource should overwrite already existing values
      */
-    public function merge(self $resource, $overwrite = true)
+    public function merge(self $resource, bool $overwrite = true): void
     {
         if ($this->getLocale() !== $resource->getLocale()) {
             trigger_error('Attempting to merge resources of different locale', \E_USER_NOTICE);
@@ -121,7 +123,7 @@ class Resource implements \ArrayAccess, \Countable, \IteratorAggregate, \Seriali
      * Gets the number of translation values in the resource
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return sizeof($this->data);
     }
@@ -130,27 +132,27 @@ class Resource implements \ArrayAccess, \Countable, \IteratorAggregate, \Seriali
      * Gets an iterator for the translation values in the resource
      * @return \ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->data);
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->data[$offset]);
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($offset): string
     {
         return $this->data[$offset];
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->data[$offset] = $value;
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->data[$offset]);
     }
@@ -159,7 +161,7 @@ class Resource implements \ArrayAccess, \Countable, \IteratorAggregate, \Seriali
      * Serializes the resource into a JSON object
      * @return string
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): string
     {
         $output = array($this->getLocale() => $this->data);
         return json_encode($output, JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG);
@@ -169,7 +171,7 @@ class Resource implements \ArrayAccess, \Countable, \IteratorAggregate, \Seriali
      * Serializes the resource into a JSON object (internally)
      * @return string
      */
-    public function serialize()
+    public function serialize(): string
     {
         return $this->jsonSerialize();
     }
@@ -179,7 +181,7 @@ class Resource implements \ArrayAccess, \Countable, \IteratorAggregate, \Seriali
      * @param string $serialized
      * @return \self
      */
-    public function unserialize($serialized)
+    public function unserialize($serialized): self
     {
         return static::fromJson($serialized);
     }
