@@ -45,15 +45,6 @@ module.exports = grunt => {
                 rulesets: 'codesize,unusedcode,naming,design'
             }
         },
-        phpdcd: {
-            application: {
-                dir: 'src/'
-            },
-            options: {
-                bin: 'vendor/bin/phpdcd',
-                verbose: 2
-            }
-         },
         phpdoc: {
             dist: {
                 src: 'src/',
