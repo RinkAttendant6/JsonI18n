@@ -18,14 +18,14 @@ class DateFormat
      * Localization data
      * @var array
      */
-    protected $formatters = array();
+    protected $formatters = [];
 
     /**
      * Creates a new JsonI18n\DateFormat instance
      * @param string $locale The default output locale
      * @throws \InvalidArgumentException If the locale parameter is empty
      */
-    public function __construct($locale)
+    public function __construct(string $locale)
     {
         if (empty($locale)) {
             throw new \InvalidArgumentException('Invalid locale.');
@@ -38,7 +38,7 @@ class DateFormat
      * Adds a resource
      * @param string $file The resource to add
      */
-    public function addResource($file)
+    public function addResource(string $file)
     {
         $contents = file_get_contents($file);
         
@@ -79,7 +79,7 @@ class DateFormat
      * @return string The formatted date
      * @throws \InvalidArgumentException If the locale or formatter name is invalid.
      */
-    public function format($datetime, $formatter, $locale = null)
+    public function format($datetime, string $formatter, ?string $locale = null): string
     {
         if ($locale === null) {
             $locale = $this->locale;
@@ -107,7 +107,7 @@ class DateFormat
      * @return \IntlDateFormatter The formatter object
      * @throws \InvalidArgumentException If the locale or formatter name is invalid.
      */
-    public function getFormatter($formatter, $locale = null)
+    public function getFormatter(string $formatter, ?string $locale = null): \IntlDateFormatter
     {
         if ($locale === null) {
             $locale = $this->locale;
@@ -128,7 +128,7 @@ class DateFormat
      * Debug function
      * @codeCoverageIgnore
      */
-    public function debug()
+    public function debug(): void
     {
         foreach ($this->formatters as $locale => $formats) {
             echo "\n# $locale\n";
@@ -147,7 +147,7 @@ class DateFormat
      * Magic debug method
      * @codeCoverageIgnore
      */
-    public function __debugInfo()
+    public function __debugInfo(): array
     {
         return $this->formatters;
     }

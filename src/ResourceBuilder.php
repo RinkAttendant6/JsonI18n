@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JsonI18n;
 
 /**
@@ -14,7 +16,7 @@ class ResourceBuilder
      * @param string $locale The locale
      * @return Resource
      */
-    public static function fromArray(array $data, $locale)
+    public static function fromArray(array $data, string $locale): Resource
     {
         return new Resource($locale, $data);
     }
@@ -25,7 +27,7 @@ class ResourceBuilder
      * @param string $locale The locale
      * @return Resource
      */
-    public static function fromString($input, $locale)
+    public static function fromString(string $input, string $locale): Resource
     {
         $data = json_decode($input, true);
         if (json_last_error() !== \JSON_ERROR_NONE) {
@@ -44,7 +46,7 @@ class ResourceBuilder
      * @param string $locale The locale
      * @return Resource
      */
-    public static function fromFile($file, $locale)
+    public static function fromFile(string $file, string $locale): Resource
     {
         if (!is_file($file)) {
             throw new \InvalidArgumentException("$file is not a file");
