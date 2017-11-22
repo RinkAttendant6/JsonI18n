@@ -18,7 +18,8 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/RinkAttendant6/JsonI18n"
+            "url": "https://github.com/RinkAttendant6/JsonI18n",
+            "no-api": true
         }
     ],
     "config": {
