@@ -11,13 +11,10 @@ Simple PHP internationalization library using JSON data.
 ### Installation
 #### Using Composer
 JsonI18n is available through the [Packagist](https://packagist.org/packages/rinkattendant6/json-i18n)
-repository. You may include JsonI18n in your project by adding this dependency to
-your composer.json file:
+repository and can be installed using Composer:
 
-```json
-"require": {
-    "rinkattendant6/json-i18n": "~2.0"
-}
+```shell
+composer require rinkattendant6/json-i18n
 ```
 
 ### Example
