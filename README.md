@@ -1,5 +1,7 @@
 # JsonI18n [![Build Status](https://travis-ci.org/RinkAttendant6/JsonI18n.svg?branch=master)](https://travis-ci.org/RinkAttendant6/JsonI18n) [![Latest Stable Version](https://poser.pugx.org/rinkattendant6/json-i18n/v/stable.png)](https://packagist.org/packages/rinkattendant6/json-i18n) [![Total Downloads](https://poser.pugx.org/rinkattendant6/json-i18n/downloads.png)](https://packagist.org/packages/rinkattendant6/json-i18n)
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/RinkAttendant6/JsonI18n.svg)](https://greenkeeper.io/)
+
 Simple PHP internationalization library using JSON data.
 
 ## License
