@@ -17,7 +17,7 @@ class DateFormat
 
     /**
      * Localization data
-     * @var array
+     * @var \IntlDateFormatter[][]
      */
     protected $formatters = [];
 
@@ -39,7 +39,7 @@ class DateFormat
      * Adds a resource
      * @param string $file The resource to add
      */
-    public function addResource(string $file)
+    public function addResource(string $file): void
     {
         $contents = file_get_contents($file);
         
@@ -54,7 +54,7 @@ class DateFormat
      * Processes the resource file data
      * @param array $data The data from the resource file
      */
-    private function processData(array $data)
+    private function processData(array $data): void
     {
         foreach ($data['formatters'] as $locale => $f) {
             if (!isset($this->formatters[$locale])) {
