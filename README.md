@@ -1,12 +1,16 @@
-# JsonI18n [![Build Status](https://travis-ci.org/RinkAttendant6/JsonI18n.svg?branch=master)](https://travis-ci.org/RinkAttendant6/JsonI18n) [![Latest Stable Version](https://poser.pugx.org/rinkattendant6/json-i18n/v/stable.png)](https://packagist.org/packages/rinkattendant6/json-i18n) [![Total Downloads](https://poser.pugx.org/rinkattendant6/json-i18n/downloads.png)](https://packagist.org/packages/rinkattendant6/json-i18n)
+# JsonI18n 
 
+[![License](https://poser.pugx.org/rinkattendant6/json-i18n/license.png)](https://packagist.org/packages/rinkattendant6/json-i18n)
+[![Build Status](https://travis-ci.org/RinkAttendant6/JsonI18n.svg?branch=master)](https://travis-ci.org/RinkAttendant6/JsonI18n)
+[![Latest Stable Version](https://poser.pugx.org/rinkattendant6/json-i18n/v/stable.png)](https://packagist.org/packages/rinkattendant6/json-i18n)
+[![Total Downloads](https://poser.pugx.org/rinkattendant6/json-i18n/downloads.png)](https://packagist.org/packages/rinkattendant6/json-i18n)
 [![Greenkeeper badge](https://badges.greenkeeper.io/RinkAttendant6/JsonI18n.svg)](https://greenkeeper.io/)
 
 Simple PHP internationalization library using JSON data.
 
 ## License
 
-[![License](https://poser.pugx.org/rinkattendant6/json-i18n/license.png)](https://packagist.org/packages/rinkattendant6/json-i18n) This library is made available under the [Mozilla Public License, version 2.0](https://www.mozilla.org/MPL/2.0/).
+ This library is made available under the [Mozilla Public License, version 2.0](https://www.mozilla.org/MPL/2.0/).
 
 ## Usage
 
