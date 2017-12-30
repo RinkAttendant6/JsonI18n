@@ -7,6 +7,7 @@ namespace JsonI18n;
 /**
  * A localization resource
  * @author Vincent Diep
+ * @license https://www.mozilla.org/en-US/MPL/2.0/ MPL-2.0
  */
 class Resource implements \ArrayAccess, \Countable, \IteratorAggregate, \JsonSerializable, \Serializable
 {

@@ -5,6 +5,7 @@ namespace JsonI18n;
 /**
  * Internationalization class to handle date formatting
  * @author Vincent Diep
+ * @license https://www.mozilla.org/en-US/MPL/2.0/ MPL-2.0
  */
 class DateFormat
 {
