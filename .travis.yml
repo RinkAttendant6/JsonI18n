@@ -2,6 +2,7 @@ language: php
 sudo: false
 php:
   - 7.1
+  - 7.2
 before_script:
   - composer install -n --prefer-source
   - npm install -g grunt-cli
