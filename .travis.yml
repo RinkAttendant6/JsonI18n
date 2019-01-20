@@ -4,6 +4,7 @@ php:
   - 7.1
   - 7.2
   - 7.3
-before_script:
-  - composer install -n --prefer-source
-script: composer lint
+install: composer install -n --prefer-source
+script:
+  - composer lint
+  - composer test
