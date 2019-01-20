@@ -30,11 +30,11 @@
     },
     "require-dev": {
         "overtrue/phplint": "^1.1",
-        "pds/skeleton": "1.0.0",
+        "pds/skeleton": "^1.0.0",
         "phpmd/phpmd" : "@stable",
-        "phpunit/phpunit": "^6.4",
-        "sebastian/phpcpd": "^3.0",
-        "squizlabs/php_codesniffer": "^3.2"
+        "phpunit/phpunit": "^7.4",
+        "sebastian/phpcpd": "^4.1",
+        "squizlabs/php_codesniffer": "^3.4"
     },
     "scripts": {
         "lint": [
