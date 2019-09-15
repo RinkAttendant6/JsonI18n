@@ -35,10 +35,6 @@ class ResourceTest extends TestCase
      */
     protected $json;
 
-    /**
-     * Sets up the fixture, for example, opens a network connection.
-     * This method is called before a test is executed.
-     */
     protected function setUp() {
         $this->json = json_encode([$this->locale => $this->data]);
         

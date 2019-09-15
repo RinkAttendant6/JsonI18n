@@ -57,22 +57,10 @@ class TranslateTest extends TestCase
         ]
     ];
 
-    /**
-     * Sets up the fixture, for example, opens a network connection.
-     * This method is called before a test is executed.
-     */
     protected function setUp() {
         $this->object = new Translate('en-CA');
     }
 
-    /**
-     * Tears down the fixture, for example, closes a network connection.
-     * This method is called after a test is executed.
-     */
-    protected function tearDown() {
-        
-    }
-    
     /**
      * @covers \JsonI18n\Translate::__construct
      */
@@ -81,15 +69,7 @@ class TranslateTest extends TestCase
         
         $this->assertEquals(Assert::readAttribute($obj2, 'lang'), 'en-CA');
     }
-    
-    /**
-     * @covers \JsonI18n\Translate::__construct
-     * @expectedException \TypeError
-     */
-    public function testConstructorFail() {
-        new Translate();
-    }
-    
+
     /**
      * @covers \JsonI18n\Translate::setLanguage
      */

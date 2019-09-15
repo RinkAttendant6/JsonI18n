@@ -30,7 +30,9 @@
         "sort-packages": true
     },
     "require": {
-        "php": "^7.1"
+        "php": "^7.1",
+        "ext-intl": "*",
+        "ext-json": "*"
     },
     "require-dev": {
         "overtrue/phplint": "^1.1",
@@ -46,6 +48,7 @@
             "phplint",
             "phpcs src",
             "phpcpd src",
+            "phpstan analyse src tests --level=1",
             "phpmd src text codesize,unusedcode,naming,design --ignore-violations-on-exit"
         ],
         "test": "phpunit tests --strict-global-state --random-order"

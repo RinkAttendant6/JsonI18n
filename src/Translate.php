@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace JsonI18n;
 
+use InvalidArgumentException;
+
 /**
  * Internationalization class to handle resource strings.
  * @author Vincent Diep
@@ -59,7 +61,7 @@ class Translate
                     $this->addResourceFile($resource);
                     break;
                 default:
-                    throw new \InvalidArgumentException("Invalid resource type");
+                    throw new InvalidArgumentException("Invalid resource type");
             }
         }
     }
@@ -67,16 +69,16 @@ class Translate
     /**
      * Adds a resource represented in a JSON string
      * @param string $resource The resource as JSON data
-     * @throws \InvalidArgumentException If the resource is not valid JSON
+     * @throws InvalidArgumentException If the resource is not valid JSON
      */
     protected function addResourceString(string $resource): void
     {
         $data = json_decode($resource, true);
         if (json_last_error() !== \JSON_ERROR_NONE) {
             if (function_exists('json_last_error_msg')) {
-                throw new \InvalidArgumentException(json_last_error_msg(), json_last_error());
+                throw new InvalidArgumentException(json_last_error_msg(), json_last_error());
             }
-            throw new \InvalidArgumentException("Error parsing JSON.", json_last_error());
+            throw new InvalidArgumentException("Error parsing JSON.", json_last_error());
         }
 
         $this->addResourceArray($data);
@@ -111,7 +113,7 @@ class Translate
         } elseif (is_array($subresource)) {
             $resource = ResourceBuilder::fromArray($subresource, $locale);
         } else {
-            throw new \InvalidArgumentException('Invalid subresource');
+            throw new InvalidArgumentException('Invalid subresource');
         }
 
         if (isset($this->data[$locale])) {
@@ -143,13 +145,13 @@ class Translate
     /**
      * Adds a resource file
      * @param string $file The path to the resource file
-     * @throws \InvalidArgumentException If the filename provided is not a file
+     * @throws InvalidArgumentException If the filename provided is not a file
      * @throws \RuntimeException If the file could not be read
      */
     protected function addResourceFile(string $file): void
     {
         if (!is_file($file)) {
-            throw new \InvalidArgumentException("$file is not a file");
+            throw new InvalidArgumentException("$file is not a file");
         }
         
         $contents = file_get_contents($file);
@@ -164,12 +166,12 @@ class Translate
     /**
      * Sets the default language
      * @param string $lang The language
-     * @throws \InvalidArgumentException If the langauge is invalid
+     * @throws InvalidArgumentException If the langauge is invalid
      */
     public function setLanguage(string $lang): void
     {
         if (!is_string($lang) || empty($lang)) {
-            throw new \InvalidArgumentException("Invalid language $lang");
+            throw new InvalidArgumentException("Invalid language $lang");
         }
         
         $this->lang = $lang;
@@ -228,7 +230,7 @@ class Translate
      * @param string $lang The output language. Default is default language.
      * @return string The "formatted" localized text
      * @throws \OutOfBoundsException If the language or key is invalid.
-     * @throws \InvalidArgumentException If the formatter strings is not a string or array.
+     * @throws InvalidArgumentException If the formatter strings is not a string or array.
      */
     public function _f(string $key, $strings, ?string $lang = null): string
     {
@@ -256,7 +258,7 @@ class Translate
             return vsprintf($this->data[$lang][$key], $strings);
         }
         
-        throw new \InvalidArgumentException('Strings must be a string or array to return a formatted localized string.');
+        throw new InvalidArgumentException('Strings must be a string or array to return a formatted localized string.');
     }
     
     /**
@@ -286,7 +288,7 @@ class Translate
         }
         
         if ($depth < 0) {
-            throw new \InvalidArgumentException("Depth must be a non-negative integer, $depth given");
+            throw new InvalidArgumentException("Depth must be a non-negative integer, $depth given");
         }
         
         if ($depth) {

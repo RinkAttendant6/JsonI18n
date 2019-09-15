@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests;
+namespace JsonI18n\Tests;
 
 use JsonI18n\DateFormat;
 use PHPUnit\Framework\Assert;
@@ -15,23 +15,11 @@ class DateFormatTest extends TestCase
      */
     protected $object;
 
-    /**
-     * Sets up the fixture, for example, opens a network connection.
-     * This method is called before a test is executed.
-     */
     protected function setUp() {
         date_default_timezone_set('America/Toronto');
         $this->object = new DateFormat('fr-CA');
     }
 
-    /**
-     * Tears down the fixture, for example, closes a network connection.
-     * This method is called after a test is executed.
-     */
-    protected function tearDown() {
-        
-    }
-    
     /**
      * @covers \JsonI18n\DateFormat::__construct
      */
@@ -40,15 +28,7 @@ class DateFormatTest extends TestCase
         
         $this->assertEquals(Assert::readAttribute($obj2, 'locale'), 'en-CA');
     }
-    
-    /**
-     * @covers \JsonI18n\DateFormat::__construct
-     * @expectedException \TypeError
-     */
-    public function testConstructorFail() {
-        new DateFormat();
-    }
-    
+
     /**
      * @covers \JsonI18n\DateFormat::__construct
      * @expectedException \InvalidArgumentException

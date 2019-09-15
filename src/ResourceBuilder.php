@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace JsonI18n;
 
+use InvalidArgumentException;
+
 /**
  * Creates translation resources
  * @author Vincent Diep
@@ -33,9 +35,9 @@ class ResourceBuilder
         $data = json_decode($input, true);
         if (json_last_error() !== \JSON_ERROR_NONE) {
             if (function_exists('json_last_error_msg')) {
-                throw new \InvalidArgumentException(json_last_error_msg(), json_last_error());
+                throw new InvalidArgumentException(json_last_error_msg(), json_last_error());
             }
-            throw new \InvalidArgumentException("Error parsing JSON.", json_last_error());
+            throw new InvalidArgumentException("Error parsing JSON.", json_last_error());
         }
 
         return static::fromArray($data, $locale);
@@ -50,7 +52,7 @@ class ResourceBuilder
     public static function fromFile(string $file, string $locale): Resource
     {
         if (!is_file($file)) {
-            throw new \InvalidArgumentException("$file is not a file");
+            throw new InvalidArgumentException("$file is not a file");
         }
         
         $contents = file_get_contents($file);
