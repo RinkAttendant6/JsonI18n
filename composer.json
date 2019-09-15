@@ -35,8 +35,8 @@
     "require-dev": {
         "overtrue/phplint": "^1.1",
         "pds/skeleton": "^1.0.0",
-        "phpmd/phpmd" : "@stable",
-        "phpunit/phpunit": "^7.4",
+        "phpmd/phpmd": "@stable",
+        "phpunit/phpunit": "^7.5",
         "sebastian/phpcpd": "^4.1",
         "squizlabs/php_codesniffer": "^3.4"
     },
