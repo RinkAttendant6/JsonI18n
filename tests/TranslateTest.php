@@ -121,7 +121,7 @@ class TranslateTest extends TestCase
      */
     public function testAddResourceFile(): void
     {
-        $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
+        $this->object->addResource(__DIR__ . '/resources/test.json');
 
         $data = Assert::readAttribute($this->object, 'data');
 
@@ -219,8 +219,8 @@ class TranslateTest extends TestCase
      */
     public function testAddMultipleResources(): void
     {
-        $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
-        $this->object->addResource(dirname(__FILE__) . '/../resources/global.json');
+        $this->object->addResource(__DIR__ . '/resources/test.json');
+        $this->object->addResource(__DIR__ . '/resources/global.json');
         
         static::assertSame('Routes and maps', $this->object->__('documentTitleTag'));
         static::assertSame('Circuits et cartes', $this->object->__('documentTitleTag', 'fr-CA'));
@@ -241,7 +241,7 @@ class TranslateTest extends TestCase
      */
     public function test__(): void
     {
-        $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
+        $this->object->addResource(__DIR__ . '/resources/test.json');
 
         static::assertSame('Quick planner', $this->object->__('documentTitleTag'));
         static::assertSame('Planificateur rapide', $this->object->__('documentTitleTag', 'fr-CA'));
@@ -255,7 +255,7 @@ class TranslateTest extends TestCase
     {
         static::expectException(OutOfBoundsException::class);
 
-        $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
+        $this->object->addResource(__DIR__ . '/resources/test.json');
         $this->object->__('documentTitleTag', 'zh-CN');
     }
     
@@ -267,7 +267,7 @@ class TranslateTest extends TestCase
     {
         static::expectException(OutOfBoundsException::class);
 
-        $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
+        $this->object->addResource(__DIR__ . '/resources/test.json');
         $this->object->__('null');
     }
 
@@ -276,7 +276,7 @@ class TranslateTest extends TestCase
      */
     public function test_f(): void
     {
-        $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
+        $this->object->addResource(__DIR__ . '/resources/test.json');
 
         static::assertSame('Destination: Kanata', $this->object->_f('destination', 'Kanata'));
         static::assertSame('You will need to transfer 2 time(s).', $this->object->_f('numBuses', 2));
@@ -298,7 +298,7 @@ class TranslateTest extends TestCase
     {
         static::expectException(OutOfBoundsException::class);
 
-        $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
+        $this->object->addResource(__DIR__ . '/resources/test.json');
         $this->object->_f('numBuses', 0, 'zh-CN');
     }
     
@@ -310,7 +310,7 @@ class TranslateTest extends TestCase
     {
         static::expectException(OutOfBoundsException::class);
 
-        $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
+        $this->object->addResource(__DIR__ . '/resources/test.json');
         $this->object->_f('null', 0);
     }
     
@@ -321,7 +321,7 @@ class TranslateTest extends TestCase
     {
         static::expectException(InvalidArgumentException::class);
 
-        $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
+        $this->object->addResource(__DIR__ . '/resources/test.json');
         $this->object->_f('numBuses', true);
     }
     
@@ -330,7 +330,7 @@ class TranslateTest extends TestCase
      */
     public function testLocalizeNullArray(): void
     {
-        $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
+        $this->object->addResource(__DIR__ . '/resources/test.json');
 
         $arr1 = $this->object->localizeDeepArray(null, 'headsign');
         
@@ -343,7 +343,7 @@ class TranslateTest extends TestCase
      */
     public function testLocalize1DArray(): void
     {
-        $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
+        $this->object->addResource(__DIR__ . '/resources/test.json');
         
         $arr1 = $this->object->localizeDeepArray($this->arr1D, 'headsign', 0, 'en-CA');
         $arr1 = $this->object->localizeDeepArray($arr1, 'subtext', 0, 'fr-CA');
@@ -361,7 +361,7 @@ class TranslateTest extends TestCase
      */
     public function testLocalize2DArray(): void
     {
-        $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
+        $this->object->addResource(__DIR__ . '/resources/test.json');
 
         $arr1 = $this->object->localizeDeepArray($this->arr2D, 'headsign', 1, 'en-CA');
         $arr2 = $this->object->localizeDeepArray($this->arr2D, 'headsign', 1, 'fr-CA');
@@ -385,7 +385,7 @@ class TranslateTest extends TestCase
      */
     public function testLocalize3DArray(): void
     {
-        $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
+        $this->object->addResource(__DIR__ . '/resources/test.json');
         
         $arr = $this->object->localizeDeepArray($this->arr3D, 'headsign', 2, 'en-CA');
         
@@ -410,7 +410,7 @@ class TranslateTest extends TestCase
     {
         static::expectException(OutOfBoundsException::class);
 
-        $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
+        $this->object->addResource(__DIR__ . '/resources/test.json');
         $this->object->localizeDeepArray($this->arr2D, 'endpoint', 1, 'en-CA');
     }
     
@@ -423,7 +423,7 @@ class TranslateTest extends TestCase
     {
         static::expectException(OutOfBoundsException::class);
 
-        $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
+        $this->object->addResource(__DIR__ . '/resources/test.json');
         $this->object->localizeDeepArray($this->arr2D, 'headsign', 1, 'zh-CN');
     }
     
@@ -436,7 +436,7 @@ class TranslateTest extends TestCase
     {
         static::expectException(OutOfBoundsException::class);
 
-        $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
+        $this->object->addResource(__DIR__ . '/resources/test.json');
         $this->object->localizeDeepArray($this->arr2D, 'headsign', 1, 'en-US');
     }
 
