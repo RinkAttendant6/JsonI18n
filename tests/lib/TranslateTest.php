@@ -4,10 +4,19 @@ declare(strict_types=1);
 
 namespace JsonI18n\Tests;
 
+use InvalidArgumentException;
 use JsonI18n\Translate;
+use LengthException;
+use OutOfBoundsException;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
+use TypeError;
+use const JSON_ERROR_SYNTAX;
 
+/**
+ * @covers \JsonI18n\Translate
+ * @coversDefaultClass \JsonI18n\Translate
+ */
 class TranslateTest extends TestCase
 {
     /**
@@ -57,67 +66,77 @@ class TranslateTest extends TestCase
         ]
     ];
 
-    protected function setUp() {
+    protected function setUp(): void
+    {
         $this->object = new Translate('en-CA');
     }
 
     /**
-     * @covers \JsonI18n\Translate::__construct
+     * @covers ::__construct
      */
-    public function testDefaultConstructor() {
+    public function testDefaultConstructor(): void
+    {
         $obj2 = new Translate('en-CA');
         
-        $this->assertEquals(Assert::readAttribute($obj2, 'lang'), 'en-CA');
+        static::assertSame('en-CA', Assert::readAttribute($obj2, 'lang'));
     }
 
     /**
-     * @covers \JsonI18n\Translate::setLanguage
+     * @covers ::setLanguage
      */
-    public function testSetLanguage() {
+    public function testSetLanguage(): void
+    {
         $this->object->setLanguage('fr-CA');
-        $this->assertEquals($this->object->getLanguage(), 'fr-CA');
+
+        static::assertSame('fr-CA', $this->object->getLanguage());
     }
     
     /**
-     * @covers \JsonI18n\Translate::setLanguage
-     * @expectedException \InvalidArgumentException
+     * @covers ::setLanguage
      * @expectedExceptionMessage Invalid language
      */
-    public function testSetEmptyLanguage() {
+    public function testSetEmptyLanguage(): void
+    {
+        static::expectException(InvalidArgumentException::class);
+
         $this->object->setLanguage('');
     }
     
     /**
-     * @covers \JsonI18n\Translate::setLanguage
-     * @expectedException \TypeError
+     * @covers ::setLanguage
      */
-    public function testSetInvalidLanguage() {
+    public function testSetInvalidLanguage(): void
+    {
+        static::expectException(TypeError::class);
+
         $this->object->setLanguage(1);
     }
 
     /**
-     * @covers \JsonI18n\Translate::addResource
-     * @covers \JsonI18n\Translate::addSubresource
-     * @covers \JsonI18n\Translate::addResourceFile
-     * @covers \JsonI18n\Translate::addResourceString
-     * @covers \JsonI18n\Translate::addResourceArray
+     * @covers ::addResource
+     * @covers ::addSubresource
+     * @covers ::addResourceFile
+     * @covers ::addResourceString
+     * @covers ::addResourceArray
      */
-    public function testAddResourceFile() {
+    public function testAddResourceFile(): void
+    {
         $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
 
         $data = Assert::readAttribute($this->object, 'data');
-        $this->assertNotEmpty($data);
-        $this->assertArrayHasKey('en-CA', $data);
-        $this->assertArrayHasKey('fr-CA', $data);
-        
-        $this->assertNotEmpty(Assert::readAttribute($this->object, 'arrayGroups'));
+
+        static::assertNotEmpty($data);
+        static::assertArrayHasKey('en-CA', $data);
+        static::assertArrayHasKey('fr-CA', $data);
+        static::assertNotEmpty(Assert::readAttribute($this->object, 'arrayGroups'));
     }
     
     /**
-     * @covers \JsonI18n\Translate::addResource
-     * @covers \JsonI18n\Translate::addResourceArray
+     * @covers ::addResource
+     * @covers ::addResourceArray
      */
-    public function testAddResourceArray() {
+    public function testAddResourceArray(): void
+    {
         $array = [
             'en-CA' => ['area' => 'area'],
             'fr-CA' => ['area' => 'zone']
@@ -126,223 +145,251 @@ class TranslateTest extends TestCase
         $this->object->addResource($array);
         
         $data = Assert::readAttribute($this->object, 'data');
-        $this->assertArrayHasKey('en-CA', $data);
-        $this->assertArrayHasKey('fr-CA', $data);
+
+        static::assertArrayHasKey('en-CA', $data);
+        static::assertArrayHasKey('fr-CA', $data);
     }
 
     /**
-     * @covers \JsonI18n\Translate::addResource
-     * @covers \JsonI18n\Translate::addResourceString
-     * @covers \JsonI18n\Translate::addResourceArray
+     * @covers ::addResource
+     * @covers ::addResourceString
+     * @covers ::addResourceArray
      */
-    public function testAddResourceJson() {
+    public function testAddResourceJson(): void
+    {
         $this->object->addResource($this->json, 'json');
 
         $data = Assert::readAttribute($this->object, 'data');
-        $this->assertNotEmpty($data);
-        $this->assertArrayHasKey('en-CA', $data);
-        $this->assertArrayHasKey('fr-CA', $data);
-        
-        $this->assertNotEmpty(Assert::readAttribute($this->object, 'arrayGroups'));
+
+        static::assertNotEmpty($data);
+        static::assertArrayHasKey('en-CA', $data);
+        static::assertArrayHasKey('fr-CA', $data);
+        static::assertNotEmpty(Assert::readAttribute($this->object, 'arrayGroups'));
     }
     
     /**
-     * @covers \JsonI18n\Translate::addResource
-     * @expectedException \InvalidArgumentException
+     * @covers ::addResource
      * @expectedExceptionMessage Invalid resource type
      */
-    public function testAddResourceInvalidType() {
+    public function testAddResourceInvalidType(): void
+    {
+        static::expectException(InvalidArgumentException::class);
+
         $this->object->addResource('foo', 'foo');
     }
     
     /**
-     * @covers \JsonI18n\Translate::addResourceFile
-     * @expectedException \InvalidArgumentException
+     * @covers ::addResourceFile
      * @expectedExceptionMessage foo is not a file
      */
-    public function testAddResourceInvalidFile() {
+    public function testAddResourceInvalidFile(): void
+    {
+        static::expectException(InvalidArgumentException::class);
+
         $this->object->addResource('foo');
     }
     
     /**
-     * @covers \JsonI18n\Translate::addResourceString
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionCode \JSON_ERROR_SYNTAX
+     * @covers ::addResourceString
      */
-    public function testAddResourceInvalidJson() {
+    public function testAddResourceInvalidJson(): void
+    {
+        static::expectException(InvalidArgumentException::class);
+        static::expectExceptionCode(JSON_ERROR_SYNTAX);
+
         $this->object->addResource('foo', 'json');
     }
     
     /**
-     * @covers \JsonI18n\Translate::addSubresource
-     * @expectedException \InvalidArgumentException
+     * @covers ::addSubresource
      */
-    public function testAddInvalidSubresource() {
+    public function testAddInvalidSubresource(): void
+    {
+        static::expectException(InvalidArgumentException::class);
+
         $this->object->addSubresource(null, 'en-CA');
     }
     
     /**
-     * @covers \JsonI18n\Translate::addResource
-     * @covers \JsonI18n\Translate::addSubresource
-     * @covers \JsonI18n\Translate::addResourceFile
-     * @covers \JsonI18n\Translate::addResourceString
-     * @covers \JsonI18n\Translate::addResourceArray
+     * @covers ::addResource
+     * @covers ::addSubresource
+     * @covers ::addResourceFile
+     * @covers ::addResourceString
+     * @covers ::addResourceArray
      */
-    public function testAddMultipleResources() {
+    public function testAddMultipleResources(): void
+    {
         $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
         $this->object->addResource(dirname(__FILE__) . '/../resources/global.json');
         
-        $this->assertEquals($this->object->__('documentTitleTag'), 'Routes and maps');
-        $this->assertEquals($this->object->__('documentTitleTag', 'fr-CA'), 'Circuits et cartes');
-        $this->assertEquals($this->object->__('goodbye'), 'Have a good day!');
-        $this->assertEquals($this->object->__('goodbye', 'fr-CA'), 'Bonne journée!');
+        static::assertSame('Routes and maps', $this->object->__('documentTitleTag'));
+        static::assertSame('Circuits et cartes', $this->object->__('documentTitleTag', 'fr-CA'));
+        static::assertSame('Have a good day!', $this->object->__('goodbye'));
+        static::assertSame('Bonne journée!', $this->object->__('goodbye', 'fr-CA'));
     }
 
     /**
-     * @covers \JsonI18n\Translate::getLanguage
+     * @covers ::getLanguage
      */
-    public function testGetLanguage() {
-        $this->assertEquals($this->object->getLanguage(), 'en-CA');
+    public function testGetLanguage(): void
+    {
+        static::assertSame('en-CA', $this->object->getLanguage());
     }
 
     /**
-     * @covers \JsonI18n\Translate::__
+     * @covers ::__
      */
-    public function test__() {
+    public function test__(): void
+    {
         $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
 
-        $this->assertEquals($this->object->__('documentTitleTag'), 'Quick planner');
-        $this->assertEquals($this->object->__('documentTitleTag', 'fr-CA'), 'Planificateur rapide');
+        static::assertSame('Quick planner', $this->object->__('documentTitleTag'));
+        static::assertSame('Planificateur rapide', $this->object->__('documentTitleTag', 'fr-CA'));
     }
     
     /**
-     * @covers \JsonI18n\Translate::__
-     * @expectedException \OutOfBoundsException
+     * @covers ::__
      * @expectedExceptionMessage Invalid language: zh-CN
      */
-    public function test__InvalidLanguage() {
+    public function test__InvalidLanguage(): void
+    {
+        static::expectException(OutOfBoundsException::class);
+
         $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
         $this->object->__('documentTitleTag', 'zh-CN');
     }
     
     /**
-     * @covers \JsonI18n\Translate::__
-     * @expectedException \OutOfBoundsException
+     * @covers ::__
      * @expectedExceptionMessage Invalid key: null
      */
-    public function test__InvalidKey() {
+    public function test__InvalidKey(): void
+    {
+        static::expectException(OutOfBoundsException::class);
+
         $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
         $this->object->__('null');
     }
 
     /**
-     * @covers \JsonI18n\Translate::_f
+     * @covers ::_f
      */
-    public function test_f() {
+    public function test_f(): void
+    {
         $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
 
-        $this->assertEquals($this->object->_f('destination', 'Kanata'), 'Destination: Kanata');
-        $this->assertEquals($this->object->_f('numBuses', 2), 'You will need to transfer 2 time(s).');
-        $this->assertEquals($this->object->_f('instructionTake', array(95, 'Campus Station', '18:01')), 'Board the 95 at Campus Station at 18:01.');
+        static::assertSame('Destination: Kanata', $this->object->_f('destination', 'Kanata'));
+        static::assertSame('You will need to transfer 2 time(s).', $this->object->_f('numBuses', 2));
+        static::assertSame('Board the 95 at Campus Station at 18:01.', $this->object->_f('instructionTake', array(95, 'Campus Station', '18:01')));
 
-        $this->assertEquals($this->object->_f('destination', 'Kanata', 'fr-CA'), 'Destination : Kanata');
-        $this->assertEquals($this->object->_f('numBuses', 2, 'fr-CA'), 'Vous devez transferer 2 fois.');
-        $this->assertEquals($this->object->_f('instructionTake', array(95, 'Station Campus', '18h01'), 'fr-CA'), 'Embarquer le 95 à Station Campus à 18h01.');
+        static::assertSame('Destination : Kanata', $this->object->_f('destination', 'Kanata', 'fr-CA'));
+        static::assertSame('Vous devez transferer 2 fois.', $this->object->_f('numBuses', 2, 'fr-CA'));
+        static::assertSame('Embarquer le 95 à Station Campus à 18h01.', $this->object->_f('instructionTake', array(95, 'Station Campus', '18h01'), 'fr-CA'));
         
-        $this->assertEquals($this->object->_f('destination', NULL), 'Destination: ');
-        $this->assertEquals($this->object->_f('numBuses', NULL), 'You will need to transfer 0 time(s).');
+        static::assertSame('Destination: ', $this->object->_f('destination', null));
+        static::assertSame('You will need to transfer 0 time(s).', $this->object->_f('numBuses', null));
     }
     
     /**
-     * @covers \JsonI18n\Translate::_f
-     * @expectedException \OutOfBoundsException
+     * @covers ::_f
      * @expectedExceptionMessage Invalid language: zh-CN
      */
-    public function test_fInvalidLanguage() {
+    public function test_fInvalidLanguage(): void
+    {
+        static::expectException(OutOfBoundsException::class);
+
         $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
         $this->object->_f('numBuses', 0, 'zh-CN');
     }
     
     /**
-     * @covers \JsonI18n\Translate::_f
-     * @expectedException \OutOfBoundsException
+     * @covers ::_f
      * @expectedExceptionMessage Invalid key: null
      */
-    public function test_fInvalidKey() {
+    public function test_fInvalidKey(): void
+    {
+        static::expectException(OutOfBoundsException::class);
+
         $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
         $this->object->_f('null', 0);
     }
     
     /**
-     * @covers \JsonI18n\Translate::_f
-     * @expectedException \InvalidArgumentException
+     * @covers ::_f
      */
-    public function test_fInvalidStrings() {
+    public function test_fInvalidStrings(): void
+    {
+        static::expectException(InvalidArgumentException::class);
+
         $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
         $this->object->_f('numBuses', true);
     }
     
     /**
-     * @covers \JsonI18n\Translate::localizeDeepArray
+     * @covers ::localizeDeepArray
      */
-    public function testLocalizeNullArray() {
+    public function testLocalizeNullArray(): void
+    {
         $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
 
         $arr1 = $this->object->localizeDeepArray(null, 'headsign');
         
-        $this->assertNull($arr1);
+        static::assertNull($arr1);
     }
     
     /**
-     * @covers \JsonI18n\Translate::flatten
-     * @covers \JsonI18n\Translate::localizeDeepArray
+     * @covers ::flatten
+     * @covers ::localizeDeepArray
      */
-    public function testLocalize1DArray() {
+    public function testLocalize1DArray(): void
+    {
         $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
         
         $arr1 = $this->object->localizeDeepArray($this->arr1D, 'headsign', 0, 'en-CA');
         $arr1 = $this->object->localizeDeepArray($arr1, 'subtext', 0, 'fr-CA');
         
-        $this->assertEquals($arr1, [
+        static::assertEquals([
             'headsign' => 'Blackbird Mall',
             'subtext' => 'Rue Main'
-        ]);
+        ], $arr1);
     }
 
     /**
-     * @covers \JsonI18n\Translate::flatten
-     * @covers \JsonI18n\Translate::parseMetadata
-     * @covers \JsonI18n\Translate::localizeDeepArray
+     * @covers ::flatten
+     * @covers ::parseMetadata
+     * @covers ::localizeDeepArray
      */
-    public function testLocalize2DArray() {
+    public function testLocalize2DArray(): void
+    {
         $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
 
         $arr1 = $this->object->localizeDeepArray($this->arr2D, 'headsign', 1, 'en-CA');
         $arr2 = $this->object->localizeDeepArray($this->arr2D, 'headsign', 1, 'fr-CA');
 
-        $this->assertEquals($arr1, [
+        static::assertEquals([
             ['headsign' => 'University'],
             ['headsign' => 'College'],
             ['headsign' => 'Airport']
-        ]);
+        ], $arr1);
 
-        $this->assertEquals($arr2, [
+        static::assertEquals([
             ['headsign' => 'Université'],
             ['headsign' => 'Collège'],
             ['headsign' => 'Aéroport']
-        ]);
+        ], $arr2);
     }
 
     /**
-     * @covers \JsonI18n\Translate::flatten
-     * @covers \JsonI18n\Translate::localizeDeepArray
+     * @covers ::flatten
+     * @covers ::localizeDeepArray
      */
-    public function testLocalize3DArray() {
+    public function testLocalize3DArray(): void
+    {
         $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
         
         $arr = $this->object->localizeDeepArray($this->arr3D, 'headsign', 2, 'en-CA');
         
-        $this->assertEquals($arr, [
+        static::assertEquals([
             'local' => [
                 ['headsign' => 'Airport']
             ],
@@ -350,59 +397,66 @@ class TranslateTest extends TestCase
                 ['headsign' => 'Blackbird Mall'],
                 ['headsign' => 'University'],
                 ['headsign' => 'College']
-            ]]
+            ]], $arr
         );
     }
     
     /**
-     * @covers \JsonI18n\Translate::flatten
-     * @covers \JsonI18n\Translate::localizeDeepArray
-     * @expectedException \OutOfBoundsException
+     * @covers ::flatten
+     * @covers ::localizeDeepArray
      * @expectedExceptionMessage Invalid group: endpoint
      */
-    public function testLocalizeArrayInvalidGroup() {
+    public function testLocalizeArrayInvalidGroup(): void
+    {
+        static::expectException(OutOfBoundsException::class);
+
         $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
-        
         $this->object->localizeDeepArray($this->arr2D, 'endpoint', 1, 'en-CA');
     }
     
     /**
-     * @covers \JsonI18n\Translate::flatten
-     * @covers \JsonI18n\Translate::localizeDeepArray
-     * @expectedException \OutOfBoundsException
+     * @covers ::flatten
+     * @covers ::localizeDeepArray
      * @expectedExceptionMessage Invalid language: zh-CN
      */
-    public function testLocalizeArrayInvalidLanguage() {
+    public function testLocalizeArrayInvalidLanguage(): void
+    {
+        static::expectException(OutOfBoundsException::class);
+
         $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
-        
         $this->object->localizeDeepArray($this->arr2D, 'headsign', 1, 'zh-CN');
     }
     
     /**
-     * @covers \JsonI18n\Translate::flatten
-     * @covers \JsonI18n\Translate::localizeDeepArray
-     * @expectedException \OutOfBoundsException
+     * @covers ::flatten
+     * @covers ::localizeDeepArray
      * @expectedExceptionMessage Invalid array index: invalid
      */
-    public function testLocalizeArrayInvalidIndex() {
+    public function testLocalizeArrayInvalidIndex(): void
+    {
+        static::expectException(OutOfBoundsException::class);
+
         $this->object->addResource(dirname(__FILE__) . '/../resources/test.json');
-        
         $this->object->localizeDeepArray($this->arr2D, 'headsign', 1, 'en-US');
     }
 
     /**
-     * @covers \JsonI18n\Translate::localizeDeepArray
-     * @expectedException \InvalidArgumentException
+     * @covers ::localizeDeepArray
      */
-    public function testLocalizeArrayInvalidDepth() {
+    public function testLocalizeArrayInvalidDepth(): void
+    {
+        static::expectException(InvalidArgumentException::class);
+
         $this->object->localizeDeepArray($this->arr2D, 'headsign', -1);
     }
 
     /**
-     * @covers \JsonI18n\Translate::localizeDeepArray
-     * @expectedException \LengthException
+     * @covers ::localizeDeepArray
      */
-    public function testLocalizeArrayExceedDepth() {
+    public function testLocalizeArrayExceedDepth(): void
+    {
+        static::expectException(LengthException::class);
+
         $this->object->localizeDeepArray($this->arr1D, 'headsign', PHP_INT_MAX);
-}
+    }
 }

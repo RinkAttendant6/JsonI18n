@@ -4,131 +4,158 @@ declare(strict_types=1);
 
 namespace JsonI18n\Tests;
 
+use DateTime;
+use DateTimeZone;
+use IntlDateFormatter;
+use InvalidArgumentException;
 use JsonI18n\DateFormat;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 
-class DateFormatTest extends TestCase
+/**
+ * @covers \JsonI18n\DateFormat
+ * @coversDefaultClass \JsonI18n\DateFormat
+ */
+final class DateFormatTest extends TestCase
 {
-    /**
-     * @var DateFormat
-     */
+    /** @var string */
+    private const TIMEZONE = 'America/Toronto';
+
+    /** @var DateFormat */
     protected $object;
 
-    protected function setUp() {
-        date_default_timezone_set('America/Toronto');
+    protected function setUp(): void
+    {
+        date_default_timezone_set(self::TIMEZONE);
         $this->object = new DateFormat('fr-CA');
     }
 
     /**
-     * @covers \JsonI18n\DateFormat::__construct
+     * @covers ::__construct
      */
-    public function testDefaultConstructor() {
+    public function testDefaultConstructor(): void
+    {
         $obj2 = new DateFormat('en-CA');
         
-        $this->assertEquals(Assert::readAttribute($obj2, 'locale'), 'en-CA');
+        static::assertSame('en-CA', Assert::readAttribute($obj2, 'locale'));
     }
 
     /**
-     * @covers \JsonI18n\DateFormat::__construct
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Invalid locale.
+     * @covers ::__construct
      */
-    public function testConstructorInvalidLanguage() {
+    public function testConstructorInvalidLanguage(): void
+    {
+        static::expectException(InvalidArgumentException::class);
+        static::expectExceptionMessage('Invalid locale.');
+
         new DateFormat('');
     }
 
     /**
-     * @covers \JsonI18n\DateFormat::addResource
-     * @covers \JsonI18n\DateFormat::processData
+     * @covers ::addResource
+     * @covers ::processData
      */
-    public function testAddResource() {
+    public function testAddResource(): void
+    {
         $this->object->addResource(__DIR__ . '/../resources/dateformats.json');
         
         $ref = Assert::readAttribute($this->object, 'formatters');
         
-        $this->assertArrayHasKey('day_date', $ref['en-CA']);
-        $this->assertArrayHasKey('day_date_time', $ref['fr-CA']);
+        static::assertArrayHasKey('day_date', $ref['en-CA']);
+        static::assertArrayHasKey('day_date_time', $ref['fr-CA']);
         
-        $this->assertInstanceOf('IntlDateFormatter', $ref['en-CA']['day_date']);
-        $this->assertInstanceOf('IntlDateFormatter', $ref['fr-CA']['day_date_time']);
+        static::assertInstanceOf(IntlDateFormatter::class, $ref['en-CA']['day_date']);
+        static::assertInstanceOf(IntlDateFormatter::class, $ref['fr-CA']['day_date_time']);
         
-        $this->assertEquals($ref['en-CA']['day_date']->getPattern(), 'eeee d MMMM yyyy');
-        $this->assertEquals($ref['fr-CA']['day_date_time']->getPattern(), 'EEE d MMM, yyyy à HH:mm');
+        static::assertSame('eeee d MMMM yyyy', $ref['en-CA']['day_date']->getPattern());
+        static::assertSame('EEE d MMM, yyyy à HH:mm', $ref['fr-CA']['day_date_time']->getPattern());
+    }
+
+    /**
+     * @covers ::format
+     * @dataProvider formatDataProvider
+     * @param string $expected Output
+     * @param DateTime|string $input Value to be localized
+     * @param string $locale Locale
+     */
+    public function testFormat(string $expected, $input, string $locale): void
+    {
+        $this->object->addResource(__DIR__ . '/../resources/dateformats.json');
+
+        static::assertSame($expected, $this->object->format($input, 'day', $locale));
+    }
+
+    public function formatDataProvider(): iterable
+    {
+        $date = new DateTime('2014-01-01', new DateTimeZone(self::TIMEZONE));
+        $date2 = DateTime::createFromFormat('Y-m-d H:i:s', '2014-07-01 08:00:00');
+
+        yield from [
+            ['Wednesday', $date, 'en-CA'],
+            ['mercredi', $date, 'fr-CA'],
+            ['Tuesday', $date2, 'en-CA'],
+            ['mardi', $date2, 'fr-CA'],
+            ['Sunday', '2014-03-02', 'en-CA'],
+            ['dimanche', '2014-03-02', 'fr-CA'],
+        ];
     }
     
     /**
-     * @covers \JsonI18n\DateFormat::format()
+     * @covers ::format
      */
-    public function testFormat() {
+    public function testFormatInvalidLocale(): void
+    {
+        static::expectException(InvalidArgumentException::class);
+        static::expectExceptionMessage('Locale data not found.');
+
         $this->object->addResource(__DIR__ . '/../resources/dateformats.json');
-        
-        $date = new \DateTime('2014-01-01');
-        $date2 = \DateTime::createFromFormat('Y-m-d H:i:s', '2014-07-01 08:00:00');
-        
-        $this->assertEquals($this->object->format($date, 'day', 'en-CA'), 'Wednesday');
-        $this->assertEquals($this->object->format($date, 'day', 'fr-CA'), 'mercredi');
-        
-        $this->assertEquals($this->object->format($date2, 'day', 'en-CA'), 'Tuesday');
-        $this->assertEquals($this->object->format($date2, 'day', 'fr-CA'), 'mardi');
-        
-        $this->assertEquals($this->object->format('2014-03-02', 'day', 'en-CA'), 'Sunday');
-        $this->assertEquals($this->object->format('2014-03-02', 'day', 'fr-CA'), 'dimanche');
-        
-    }
-    
-    /**
-     * @covers \JsonI18n\DateFormat::format()
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Locale data not found.
-     */
-    public function testFormatInvalidLocale() {
-        $this->object->addResource(__DIR__ . '/../resources/dateformats.json');
-        
         $this->object->format('2014-03-02', 'day', 'zh-CN');
     }
     
     /**
-     * @covers \JsonI18n\DateFormat::format()
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Formatter not found for specified locale.
+     * @covers ::format
      */
-    public function testFormatInvalidFormat() {
+    public function testFormatInvalidFormat(): void
+    {
+        static::expectException(InvalidArgumentException::class);
+        static::expectExceptionMessage('Formatter not found for specified locale.');
+
         $this->object->addResource(__DIR__ . '/../resources/dateformats.json');
-        
         $this->object->format('2014-03-02', 'invalid');
     }
     
     /**
-     * @covers \JsonI18n\DateFormat::getFormatter()
+     * @covers ::getFormatter()
      */
-    public function testGetFormatter() {
+    public function testGetFormatter(): void
+    {
         $this->object->addResource(__DIR__ . '/../resources/dateformats.json');
         
-        $this->assertInstanceOf('IntlDateFormatter', $this->object->getFormatter('day'));
-        $this->assertEquals($this->object->getFormatter('day')->getPattern(), 'cccc');
+        static::assertInstanceOf(IntlDateFormatter::class, $this->object->getFormatter('day'));
+        static::assertSame('cccc', $this->object->getFormatter('day')->getPattern());
     }
     
     /**
-     * @covers \JsonI18n\DateFormat::getFormatter()
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Locale data not found.
+     * @covers ::getFormatter
      */
-    public function testGetFormatterInvalidLocale() {
+    public function testGetFormatterInvalidLocale(): void
+    {
+        static::expectException(InvalidArgumentException::class);
+        static::expectExceptionMessage('Locale data not found.');
+
         $this->object->addResource(__DIR__ . '/../resources/dateformats.json');
-        
         $this->object->getFormatter('day', 'zh-CN');
     }
     
     /**
-     * @covers \JsonI18n\DateFormat::getFormatter()
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Formatter not found for specified locale.
+     * @covers ::getFormatter
      */
-    public function testGetFormatterInvalidFormatter() {
+    public function testGetFormatterInvalidFormatter(): void
+    {
+        static::expectException(InvalidArgumentException::class);
+        static::expectExceptionMessage('Formatter not found for specified locale.');
+
         $this->object->addResource(__DIR__ . '/../resources/dateformats.json');
-        
         $this->object->getFormatter('invalid');
     }
-
 }
