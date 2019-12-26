@@ -4,9 +4,16 @@ declare(strict_types=1);
 
 namespace JsonI18n\Tests;
 
+use Iterator;
 use JsonI18n\Resource;
+use PHPUnit\Framework\Error\Error;
+use PHPUnit\Framework\Error\Notice;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \JsonI18n\Resource
+ * @coversDefaultClass \JsonI18n\Resource
+ */
 class ResourceTest extends TestCase
 {
     /**
@@ -35,42 +42,46 @@ class ResourceTest extends TestCase
      */
     protected $json;
 
-    protected function setUp() {
+    protected function setUp(): void
+    {
         $this->json = json_encode([$this->locale => $this->data]);
-        
         $this->object = new Resource($this->locale, $this->data);
     }
 
     /**
-     * @covers \JsonI18n\Resource::fromJson
-     * @covers \JsonI18n\Resource::__construct
-     * @covers \JsonI18n\Resource::setLocale
+     * @covers ::fromJson
+     * @covers ::__construct
+     * @covers ::setLocale
      */
-    public function testFromJson() {
+    public function testFromJson(): void
+    {
         $resource = Resource::fromJson($this->json);
         
-        $this->assertSame($this->locale, $resource->getLocale());
-        $this->assertSame($this->data, $this->readAttribute($this->object, 'data'));
+        static::assertSame($this->locale, $resource->getLocale());
+        static::assertSame($this->data, $this->readAttribute($this->object, 'data'));
     }
 
     /**
-     * @covers \JsonI18n\Resource::getLocale
+     * @covers ::getLocale
      */
-    public function testGetLocale() {
-        $this->assertSame($this->locale, $this->object->getLocale());
+    public function testGetLocale(): void
+    {
+        static::assertSame($this->locale, $this->object->getLocale());
     }
 
     /**
-     * @covers \JsonI18n\Resource::getLanguage
+     * @covers ::getLanguage
      */
-    public function testGetLanguage() {
-        $this->assertSame('en', $this->object->getLanguage());
+    public function testGetLanguage(): void
+    {
+        static::assertSame('en', $this->object->getLanguage());
     }
 
     /**
-     * @covers \JsonI18n\Resource::addData
+     * @covers ::addData
      */
-    public function testAddData() {
+    public function testAddData(): void
+    {
         $new = [
             'station' => 'Terminal',
             'greeting' => 'Hello'
@@ -80,14 +91,15 @@ class ResourceTest extends TestCase
         
         $data = $this->readAttribute($this->object, 'data');
         
-        $this->assertArrayHasKey('greeting', $data);
-        $this->assertSame('Terminal', $data['station']);
+        static::assertArrayHasKey('greeting', $data);
+        static::assertSame('Terminal', $data['station']);
     }
     
     /**
-     * @covers \JsonI18n\Resource::addData
+     * @covers ::addData
      */
-    public function testAddDataNoOverwrite() {
+    public function testAddDataNoOverwrite(): void
+    {
         $new = [
             'station' => 'Terminal',
             'greeting' => 'Hello'
@@ -96,20 +108,22 @@ class ResourceTest extends TestCase
         $this->object->addData($new, false);
         
         $data = $this->readAttribute($this->object, 'data');
-        $this->assertSame('Station', $data['station']);
+        static::assertSame('Station', $data['station']);
     }
 
     /**
-     * @covers \JsonI18n\Resource::getData
+     * @covers ::getData
      */
-    public function testGetData() {
-        $this->assertSame($this->data, $this->object->getData());
+    public function testGetData(): void
+    {
+        static::assertSame($this->data, $this->object->getData());
     }
 
     /**
-     * @covers \JsonI18n\Resource::merge
+     * @covers ::merge
      */
-    public function testMerge() {
+    public function testMerge(): void
+    {
         $new = [
             'station' => 'Terminal',
             'greeting' => 'Hello'
@@ -118,14 +132,15 @@ class ResourceTest extends TestCase
         $this->object->merge(new Resource($this->locale, $new));
         
         $data = $this->readAttribute($this->object, 'data');
-        $this->assertSame('Terminal', $data['station']);
-        $this->assertArrayHasKey('greeting', $new);
+        static::assertSame('Terminal', $data['station']);
+        static::assertArrayHasKey('greeting', $new);
     }
     
     /**
-     * @covers \JsonI18n\Resource::merge
+     * @covers ::merge
      */
-    public function testMergeNoOverwrite() {
+    public function testMergeNoOverwrite(): void
+    {
         $new = [
             'station' => 'Terminal',
             'greeting' => 'Hello'
@@ -134,91 +149,104 @@ class ResourceTest extends TestCase
         $this->object->merge(new Resource($this->locale, $new), false);
         
         $data = $this->readAttribute($this->object, 'data');
-        $this->assertSame('Station', $data['station']);
-        $this->assertArrayHasKey('greeting', $new);
+        static::assertSame('Station', $data['station']);
+        static::assertArrayHasKey('greeting', $new);
     }
     
     /**
-     * @covers \JsonI18n\Resource::merge
-     * @expectedException \PHPunit\Framework\Error\Notice
+     * @covers ::merge
      */
-    public function testMergeDifferentLocales() {
+    public function testMergeDifferentLocales(): void
+    {
+        static::expectException(Notice::class);
+
         $this->object->merge(new Resource('zh-CN'));
     }
 
     /**
-     * @covers \JsonI18n\Resource::count
+     * @covers ::count
      */
-    public function testCount() {
-        $this->assertSame(sizeof($this->data), $this->object->count());
+    public function testCount(): void
+    {
+        static::assertSame(sizeof($this->data), $this->object->count());
     }
 
     /**
-     * @covers \JsonI18n\Resource::getIterator
+     * @covers ::getIterator
      */
-    public function testGetIterator() {
-        $this->assertInstanceOf("\\Iterator", $this->object->getIterator());
+    public function testGetIterator(): void
+    {
+        static::assertInstanceOf(Iterator::class, $this->object->getIterator());
     }
 
     /**
-     * @covers \JsonI18n\Resource::offsetExists
+     * @covers ::offsetExists
      */
-    public function testOffsetExists() {
-        $this->assertTrue(isset($this->object['station']));
-        $this->assertFalse(isset($this->object->offsetExists['foo']));
+    public function testOffsetExists(): void
+    {
+        static::assertTrue(isset($this->object['station']));
+        static::assertFalse(isset($this->object->offsetExists['foo']));
     }
 
     /**
-     * @covers \JsonI18n\Resource::offsetGet
+     * @covers ::offsetGet
      */
-    public function testOffsetGet() {
-        $this->assertSame($this->data['station'], $this->object['station']);
+    public function testOffsetGet(): void
+    {
+        static::assertSame($this->data['station'], $this->object['station']);
     }
     
     /**
-     * @covers \JsonI18n\Resource::offsetGet
-     * @expectedException \PHPunit\Framework\Error\Error
+     * @covers ::offsetGet
      */
-    public function testOffsetGetInexistent() {
+    public function testOffsetGetInexistent(): void
+    {
+        static::expectException(Error::class);
+
         $this->object['foo'];
     }
 
     /**
-     * @covers \JsonI18n\Resource::offsetSet
+     * @covers ::offsetSet
      */
-    public function testOffsetSet() {
+    public function testOffsetSet(): void
+    {
         $this->object['greeting'] = 'Hello';
         
-        $this->assertArrayHasKey('greeting', $this->readAttribute($this->object, 'data'));
+        static::assertArrayHasKey('greeting', $this->readAttribute($this->object, 'data'));
     }
 
     /**
-     * @covers \JsonI18n\Resource::offsetUnset
+     * @covers ::offsetUnset
      */
-    public function testOffsetUnset() {
+    public function testOffsetUnset(): void
+    {
         unset($this->object['station']);
         
-        $this->assertArrayNotHasKey('station', $this->readAttribute($this->object, 'data'));
+        static::assertArrayNotHasKey('station', $this->readAttribute($this->object, 'data'));
     }
 
     /**
-     * @covers \JsonI18n\Resource::jsonSerialize
+     * @covers ::jsonSerialize
      */
-    public function testJsonSerialize() {
-        $this->assertSame($this->json, $this->object->jsonSerialize());
+    public function testJsonSerialize(): void
+    {
+        static::assertSame($this->json, $this->object->jsonSerialize());
     }
 
     /**
-     * @covers \JsonI18n\Resource::serialize
+     * @covers ::serialize
      */
-    public function testSerialize() {
-        $this->assertSame($this->json, $this->object->serialize());
+    public function testSerialize(): void
+    {
+        static::assertSame($this->json, $this->object->serialize());
     }
 
     /**
-     * @covers \JsonI18n\Resource::unserialize
+     * @covers ::unserialize
      */
-    public function testUnserialize() {
-        $this->assertEquals($this->object, $this->object->unserialize($this->json));
+    public function testUnserialize(): void
+    {
+        static::assertEquals($this->object, $this->object->unserialize($this->json));
     }
 }
