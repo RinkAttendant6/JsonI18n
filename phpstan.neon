@@ -2,4 +2,4 @@ parameters:
     ignoreErrors:
         -
             message: "#Cannot unset offset 'station' on resource.#"
-            path: tests/lib/ResourceTest.php
+            path: tests/ResourceTest.php
