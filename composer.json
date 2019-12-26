@@ -16,7 +16,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "JsonI18n\\Tests\\": "tests/lib/"
+            "JsonI18n\\Tests\\": "tests/"
         }
     },
     "repositories": [
