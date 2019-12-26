@@ -57,7 +57,7 @@ final class DateFormatTest extends TestCase
      */
     public function testAddResource(): void
     {
-        $this->object->addResource(__DIR__ . '/../resources/dateformats.json');
+        $this->object->addResource(__DIR__ . '/resources/dateformats.json');
         
         $ref = Assert::readAttribute($this->object, 'formatters');
         
@@ -80,7 +80,7 @@ final class DateFormatTest extends TestCase
      */
     public function testFormat(string $expected, $input, string $locale): void
     {
-        $this->object->addResource(__DIR__ . '/../resources/dateformats.json');
+        $this->object->addResource(__DIR__ . '/resources/dateformats.json');
 
         static::assertSame($expected, $this->object->format($input, 'day', $locale));
     }
@@ -108,7 +108,7 @@ final class DateFormatTest extends TestCase
         static::expectException(InvalidArgumentException::class);
         static::expectExceptionMessage('Locale data not found.');
 
-        $this->object->addResource(__DIR__ . '/../resources/dateformats.json');
+        $this->object->addResource(__DIR__ . '/resources/dateformats.json');
         $this->object->format('2014-03-02', 'day', 'zh-CN');
     }
     
@@ -120,7 +120,7 @@ final class DateFormatTest extends TestCase
         static::expectException(InvalidArgumentException::class);
         static::expectExceptionMessage('Formatter not found for specified locale.');
 
-        $this->object->addResource(__DIR__ . '/../resources/dateformats.json');
+        $this->object->addResource(__DIR__ . '/resources/dateformats.json');
         $this->object->format('2014-03-02', 'invalid');
     }
     
@@ -129,7 +129,7 @@ final class DateFormatTest extends TestCase
      */
     public function testGetFormatter(): void
     {
-        $this->object->addResource(__DIR__ . '/../resources/dateformats.json');
+        $this->object->addResource(__DIR__ . '/resources/dateformats.json');
         
         static::assertInstanceOf(IntlDateFormatter::class, $this->object->getFormatter('day'));
         static::assertSame('cccc', $this->object->getFormatter('day')->getPattern());
@@ -143,7 +143,7 @@ final class DateFormatTest extends TestCase
         static::expectException(InvalidArgumentException::class);
         static::expectExceptionMessage('Locale data not found.');
 
-        $this->object->addResource(__DIR__ . '/../resources/dateformats.json');
+        $this->object->addResource(__DIR__ . '/resources/dateformats.json');
         $this->object->getFormatter('day', 'zh-CN');
     }
     
@@ -155,7 +155,7 @@ final class DateFormatTest extends TestCase
         static::expectException(InvalidArgumentException::class);
         static::expectExceptionMessage('Formatter not found for specified locale.');
 
-        $this->object->addResource(__DIR__ . '/../resources/dateformats.json');
+        $this->object->addResource(__DIR__ . '/resources/dateformats.json');
         $this->object->getFormatter('invalid');
     }
 }
