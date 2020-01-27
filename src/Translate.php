@@ -32,14 +32,26 @@ class Translate
     protected $data;
     
     /**
+     * Set of settings
+     * @var array[]
+     */
+    protected $settings;
+    
+    /**
      * Creates a new JsonI18n\Translate instance
      * @param string $lang The default output language
      */
     public function __construct(string $lang)
     {
+        $this->setSettings();
         $this->setLanguage($lang);
     }
-    
+
+    public function setSettings(array $settings = []): void
+    {
+        $this->settings = new Settings($settings);
+    }
+
     /**
      * Adds a resource
      * @param mixed $resource The resource to add
@@ -199,6 +211,10 @@ class Translate
     {
         if ($lang === null) {
             $lang = $this->lang;
+        }
+
+        if ($this->settings->getFallbackWithKey()) {
+            return $key;
         }
         
         if (!isset($this->data[$lang])) {

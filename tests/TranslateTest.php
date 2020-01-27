@@ -101,6 +101,17 @@ class TranslateTest extends TestCase
 
         $this->object->setLanguage('');
     }
+
+    /**
+     * @covers ::setSettings
+     */
+    public function testFallbackWithKey(): void
+    {
+        $this->object->setSettings([ 'fallbackWithKey' => true ]);
+
+        static::assertSame('MY_CUSTOM_KEY', $this->object->__('MY_CUSTOM_KEY'));
+    }
+    
     
     /**
      * @covers ::setLanguage
