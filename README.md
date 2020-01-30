@@ -33,7 +33,7 @@ $t = new \JsonI18n\Translate('en-CA');
 
 // Optional settings
 $t->setSettings([
-    'fallbackWithKey' => true,
+    'strict' => false,
 ]);
 
 $t->addResource('path/to/file.json');

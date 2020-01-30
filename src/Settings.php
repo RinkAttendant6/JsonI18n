@@ -10,42 +10,31 @@ namespace JsonI18n;
 class Settings
 {
     /**
-     * The type of fallback
+     * If set to false, JsonI18n will show invalid keys
      * @var bool
      */
-    protected $fallbackWithKey;
+    protected $strict;
 
     /**
      * Creates a new JsonI18n\Settings instance
      * @param array $settings The custom settings
-     * @throws \InvalidArgumentException If the locale parameter is empty
      */
     public function __construct(array $settings = [])
     {
-        if (!$settings) {
-            $this->setFallbackWithKey();
-            return;
-        }
+        $defaultSettings = ['strict' => true];
+        $settings = array_merge($defaultSettings, $settings);
 
-        if (isset($settings['fallbackWithKey'])) {
-            $fallbackWithKey = $settings['fallbackWithKey'];
-            if (is_bool($fallbackWithKey))
-                $this->setFallbackWithKey($fallbackWithKey);
-            else
-                throw new \InvalidArgumentException('Invalid fallback setting.');
-        } else {
-            $this->setFallbackWithKey();
-        }
+        $this->setStrict((bool) $settings['strict']);
     }
 
-    public function setFallbackWithKey(bool $fallback = false): void
+    public function setStrict(bool $strict): void
     {
-        $this->fallbackWithKey = $fallback;
+        $this->strict = $strict;
     }
 
-    public function getFallbackWithKey(): bool
+    public function getStrict(): bool
     {
-        return $this->fallbackWithKey;
+        return $this->strict;
     }
 
 }

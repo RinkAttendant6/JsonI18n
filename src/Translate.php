@@ -213,7 +213,7 @@ class Translate
             $lang = $this->lang;
         }
 
-        if ($this->settings->getFallbackWithKey()) {
+        if (!$this->settings->getStrict()) {
             return $key;
         }
         
