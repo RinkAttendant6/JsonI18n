@@ -36,5 +36,4 @@ class Settings
     {
         return $this->strict;
     }
-
 }
