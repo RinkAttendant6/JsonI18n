@@ -31,6 +31,11 @@ $t = new \JsonI18n\Translate('en-CA');
 // By default, strings will be outputted in the locale given in the constructor
 // In this case, Canadian English will be returned unless explicitly stated otherwise
 
+// Optional settings
+$t->setSettings([
+    'strict' => false,
+]);
+
 $t->addResource('path/to/file.json');
 
 $t->_ef('greeting', 'Jason'); // prints out "Hello"

@@ -101,6 +101,17 @@ class TranslateTest extends TestCase
 
         $this->object->setLanguage('');
     }
+
+    /**
+     * @covers ::setSettings
+     */
+    public function testStrictSetting(): void
+    {
+        $this->object->setSettings([ 'strict' => false ]);
+
+        static::assertSame('MY_CUSTOM_KEY', $this->object->__('MY_CUSTOM_KEY'));
+    }
+    
     
     /**
      * @covers ::setLanguage
