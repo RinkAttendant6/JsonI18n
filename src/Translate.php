@@ -257,6 +257,8 @@ class Translate
         }
         
         if (!isset($this->data[$lang][$key])) {
+            if (!$this->settings->getStrict())
+                return $key;
             throw new \OutOfBoundsException("Invalid key: $key");
         }
         
