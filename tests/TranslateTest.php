@@ -107,12 +107,13 @@ class TranslateTest extends TestCase
      */
     public function testStrictSetting(): void
     {
-        $this->object->setSettings([ 'strict' => false ]);
+        $tr = new Translate('en-CA');
+        $tr->addResource(__DIR__ . '/resources/test.json');
+        $tr->setSettings([ 'strict' => false ]);
 
-        static::assertSame('MY_CUSTOM_KEY', $this->object->__('MY_CUSTOM_KEY'));
+        static::assertSame('MY_CUSTOM_KEY', $tr->__('MY_CUSTOM_KEY'));
     }
-    
-    
+
     /**
      * @covers ::setLanguage
      */
