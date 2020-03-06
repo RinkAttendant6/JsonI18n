@@ -212,16 +212,15 @@ class Translate
         if ($lang === null) {
             $lang = $this->lang;
         }
-
-        if (!$this->settings->getStrict()) {
-            return $key;
-        }
         
         if (!isset($this->data[$lang])) {
             throw new \OutOfBoundsException("Invalid language: $lang");
         }
         
         if (!isset($this->data[$lang][$key])) {
+            if (!$this->settings->getStrict()) {
+                return $key;
+            }
             throw new \OutOfBoundsException("Invalid key: $key");
         }
         
@@ -259,6 +258,9 @@ class Translate
         }
         
         if (!isset($this->data[$lang][$key])) {
+            if (!$this->settings->getStrict()) {
+                return $key;
+            }
             throw new \OutOfBoundsException("Invalid key: $key");
         }
         
