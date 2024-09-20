@@ -1,9 +1,10 @@
 # JsonI18n 
 
-[![License](https://poser.pugx.org/rinkattendant6/json-i18n/license.png)](https://packagist.org/packages/rinkattendant6/json-i18n)
+![Packagist License](https://img.shields.io/packagist/l/RinkAttendant6/json-i18n)
 [![Build Status](https://github.com/RinkAttendant6/JsonI18n/workflows/Test/badge.svg)](https://github.com/RinkAttendant6/JsonI18n/actions)
-[![Latest Stable Version](https://poser.pugx.org/rinkattendant6/json-i18n/v/stable.png)](https://packagist.org/packages/rinkattendant6/json-i18n)
-[![Total Downloads](https://poser.pugx.org/rinkattendant6/json-i18n/downloads.png)](https://packagist.org/packages/rinkattendant6/json-i18n)
+![GitHub Issues](https://img.shields.io/github/issues/RinkAttendant6/JsonI18n)
+![Packagist Version](https://img.shields.io/packagist/v/RinkAttendant6/json-i18n)
+![Packagist Downloads](https://img.shields.io/packagist/dt/RinkAttendant6/json-i18n)
 
 Simple PHP internationalization library using JSON data.
 
