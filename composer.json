@@ -35,11 +35,11 @@
         "ext-json": "*"
     },
     "require-dev": {
-        "overtrue/phplint": "^9.5",
+        "overtrue/phplint": "^3.2|^9.5",
         "pds/skeleton": "^1.0.0",
         "phpmd/phpmd": "@stable",
         "phpstan/phpstan": "^2.1",
-        "phpunit/phpunit": "^11",
+        "phpunit/phpunit": "^7|^11",
         "squizlabs/php_codesniffer": "^3.11"
     },
     "scripts": {
