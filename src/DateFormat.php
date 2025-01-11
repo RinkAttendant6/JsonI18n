@@ -11,13 +11,13 @@ class DateFormat
 {
     /**
      * The locale to display
-     * @var string
+     * @var non-empty-string
      */
     protected $locale;
 
     /**
      * Localization data
-     * @var \IntlDateFormatter[][]
+     * @var array<string, array<string, \IntlDateFormatter>>
      */
     protected $formatters = [];
 
@@ -58,7 +58,7 @@ class DateFormat
     {
         foreach ($data['formatters'] as $locale => $f) {
             if (!isset($this->formatters[$locale])) {
-                $this->formatters[$locale] = array();
+                $this->formatters[$locale] = [];
             }
             
             foreach ($f as $formatter => $d) {
@@ -67,27 +67,25 @@ class DateFormat
                     $calendar = \IntlDateFormatter::TRADITIONAL;
                 }
                 
-                $this->formatters[$locale][$formatter] = new \IntlDateFormatter($locale, null, null, null, $calendar, $d['pattern']);
+                $this->formatters[$locale][$formatter] = new \IntlDateFormatter($locale, 0, 0, null, $calendar, $d['pattern']);
             }
         }
     }
     
     /**
      * Formats a date/time
-     * @param \DateTime|string $datetime The date/time to format. If a string is passed, it will be used to create a DateTime object.
+     * @param \DateTimeInterface|string $datetime The date/time to format. If a string is passed, it will be used to create a DateTimeImmutable object.
      * @param string $formatter The name of the formatter pattern to use
-     * @param string $locale The locale for format in. Defaults to default locale.
+     * @param non-empty-string|null $locale The locale for format in. Defaults to default locale.
      * @return string The formatted date
      * @throws \InvalidArgumentException If the locale or formatter name is invalid.
      */
     public function format($datetime, string $formatter, ?string $locale = null): string
     {
-        if ($locale === null) {
-            $locale = $this->locale;
-        }
+        $locale = $locale ?? $this->locale;
         
-        if (!($datetime instanceof \DateTime)) {
-            $datetime = new \DateTime($datetime);
+        if (!($datetime instanceof \DateTimeInterface)) {
+            $datetime = new \DateTimeImmutable($datetime);
         }
         
         if (!isset($this->formatters[$locale])) {
@@ -104,15 +102,13 @@ class DateFormat
     /**
      * Returns a IntlDateFormatter object
      * @param string $formatter The name of the formatter pattern
-     * @param string $locale The locale. Defaults to default locale.
+     * @param non-empty-string|null $locale The locale. Defaults to default locale.
      * @return \IntlDateFormatter The formatter object
      * @throws \InvalidArgumentException If the locale or formatter name is invalid.
      */
     public function getFormatter(string $formatter, ?string $locale = null): \IntlDateFormatter
     {
-        if ($locale === null) {
-            $locale = $this->locale;
-        }
+        $locale = $locale ?? $this->locale;
         
         if (!isset($this->formatters[$locale])) {
             throw new \InvalidArgumentException('Locale data not found.');

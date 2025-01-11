@@ -122,7 +122,7 @@ class Resource implements \ArrayAccess, \Countable, \IteratorAggregate, \JsonSer
 
     /**
      * Gets the number of translation values in the resource
-     * @return int
+     * @return non-negative-int
      */
     public function count(): int
     {
