@@ -9,13 +9,15 @@ use DateTimeZone;
 use IntlDateFormatter;
 use InvalidArgumentException;
 use JsonI18n\DateFormat;
-use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \JsonI18n\DateFormat
  * @coversDefaultClass \JsonI18n\DateFormat
  */
+#[CoversClass("\JsonI18n\DateFormat")]
 final class DateFormatTest extends TestCase
 {
     /** @var string */
@@ -68,6 +70,7 @@ final class DateFormatTest extends TestCase
      * @param DateTime|string $input Value to be localized
      * @param string $locale Locale
      */
+    #[DataProvider("formatDataProvider")]
     public function testFormat(string $expected, $input, string $locale): void
     {
         $this->object->addResource(__DIR__ . '/resources/dateformats.json');

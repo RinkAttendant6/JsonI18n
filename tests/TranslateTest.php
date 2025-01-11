@@ -8,6 +8,7 @@ use InvalidArgumentException;
 use JsonI18n\Translate;
 use LengthException;
 use OutOfBoundsException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use TypeError;
 use const JSON_ERROR_SYNTAX;
@@ -16,6 +17,7 @@ use const JSON_ERROR_SYNTAX;
  * @covers \JsonI18n\Translate
  * @coversDefaultClass \JsonI18n\Translate
  */
+#[CoversClass("\JsonI18n\Translate")]
 class TranslateTest extends TestCase
 {
     /**
@@ -31,7 +33,7 @@ class TranslateTest extends TestCase
     
     /**
      * Sample one dimensional array
-     * @var string[]
+     * @var array<string, string>
      */
     protected $arr1D = [
         'headsign_en' => 'Blackbird Mall',
@@ -42,7 +44,7 @@ class TranslateTest extends TestCase
 
     /**
      * Sample two-dimensional array
-     * @var string[][]
+     * @var list<array<string, string>>
      */
     protected $arr2D = [
         ['headsign_en' => 'University', 'headsign_fr' => 'Université'],
@@ -52,11 +54,11 @@ class TranslateTest extends TestCase
 
     /**
      * Sample three-dimensional array
-     * @var string[][][]
+     * @var array<string, list<array<string, string>>>
      */
     protected $arr3D = [
         'local' => [
-            ['headsign_en' => 'Airport', 'headsign_fr' => 'Aéroport']
+            ['headsign_en' => 'Airport', 'headsign_fr' => 'Aéroport'],
         ],
         'crosstown' => [
             ['headsign_en' => 'Blackbird Mall', 'headsign_fr' => 'Centre commercial Blackbird'],
@@ -92,11 +94,11 @@ class TranslateTest extends TestCase
     
     /**
      * @covers ::setLanguage
-     * @expectedExceptionMessage Invalid language
      */
     public function testSetEmptyLanguage(): void
     {
         static::expectException(InvalidArgumentException::class);
+        static::expectExceptionMessage("Invalid language");
 
         $this->object->setLanguage('');
     }
@@ -178,22 +180,22 @@ class TranslateTest extends TestCase
     
     /**
      * @covers ::addResource
-     * @expectedExceptionMessage Invalid resource type
      */
     public function testAddResourceInvalidType(): void
     {
         static::expectException(InvalidArgumentException::class);
+        static::expectExceptionMessage("Invalid resource type");
 
         $this->object->addResource('foo', 'foo');
     }
     
     /**
      * @covers ::addResourceFile
-     * @expectedExceptionMessage foo is not a file
      */
     public function testAddResourceInvalidFile(): void
     {
         static::expectException(InvalidArgumentException::class);
+        static::expectExceptionMessage("foo is not a file");
 
         $this->object->addResource('foo');
     }
@@ -258,11 +260,11 @@ class TranslateTest extends TestCase
     
     /**
      * @covers ::__
-     * @expectedExceptionMessage Invalid language: zh-CN
      */
     public function test__InvalidLanguage(): void
     {
         static::expectException(OutOfBoundsException::class);
+        static::expectExceptionMessage("Invalid language: zh-CN");
 
         $this->object->addResource(__DIR__ . '/resources/test.json');
         $this->object->__('documentTitleTag', 'zh-CN');
@@ -301,11 +303,11 @@ class TranslateTest extends TestCase
     
     /**
      * @covers ::_f
-     * @expectedExceptionMessage Invalid language: zh-CN
      */
     public function test_fInvalidLanguage(): void
     {
         static::expectException(OutOfBoundsException::class);
+        static::expectExceptionMessage("Invalid language: zh-CN");
 
         $this->object->addResource(__DIR__ . '/resources/test.json');
         $this->object->_f('numBuses', 0, 'zh-CN');
@@ -313,11 +315,11 @@ class TranslateTest extends TestCase
     
     /**
      * @covers ::_f
-     * @expectedExceptionMessage Invalid key: null
      */
     public function test_fInvalidKey(): void
     {
         static::expectException(OutOfBoundsException::class);
+        static::expectExceptionMessage("Invalid key: null");
 
         $this->object->addResource(__DIR__ . '/resources/test.json');
         $this->object->_f('null', 0);
@@ -400,7 +402,7 @@ class TranslateTest extends TestCase
         
         static::assertEquals([
             'local' => [
-                ['headsign' => 'Airport']
+                ['headsign' => 'Airport'],
             ],
             'crosstown' => [
                 ['headsign' => 'Blackbird Mall'],
@@ -413,11 +415,11 @@ class TranslateTest extends TestCase
     /**
      * @covers ::flatten
      * @covers ::localizeDeepArray
-     * @expectedExceptionMessage Invalid group: endpoint
      */
     public function testLocalizeArrayInvalidGroup(): void
     {
         static::expectException(OutOfBoundsException::class);
+        static::expectExceptionMessage("Invalid group: endpoint");
 
         $this->object->addResource(__DIR__ . '/resources/test.json');
         $this->object->localizeDeepArray($this->arr2D, 'endpoint', 1, 'en-CA');
@@ -426,11 +428,11 @@ class TranslateTest extends TestCase
     /**
      * @covers ::flatten
      * @covers ::localizeDeepArray
-     * @expectedExceptionMessage Invalid language: zh-CN
      */
     public function testLocalizeArrayInvalidLanguage(): void
     {
         static::expectException(OutOfBoundsException::class);
+        static::expectExceptionMessage("Invalid language: zh-CN");
 
         $this->object->addResource(__DIR__ . '/resources/test.json');
         $this->object->localizeDeepArray($this->arr2D, 'headsign', 1, 'zh-CN');
@@ -439,11 +441,11 @@ class TranslateTest extends TestCase
     /**
      * @covers ::flatten
      * @covers ::localizeDeepArray
-     * @expectedExceptionMessage Invalid array index: invalid
      */
     public function testLocalizeArrayInvalidIndex(): void
     {
         static::expectException(OutOfBoundsException::class);
+        static::expectExceptionMessage("Invalid array index: invalid");
 
         $this->object->addResource(__DIR__ . '/resources/test.json');
         $this->object->localizeDeepArray($this->arr2D, 'headsign', 1, 'en-US');

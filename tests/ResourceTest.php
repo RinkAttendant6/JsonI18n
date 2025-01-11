@@ -6,13 +6,14 @@ namespace JsonI18n\Tests;
 
 use Iterator;
 use JsonI18n\Resource;
-use PHPUnit\Framework\Error\Notice;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \JsonI18n\Resource
  * @coversDefaultClass \JsonI18n\Resource
  */
+#[CoversClass("\JsonI18n\Resource")]
 class ResourceTest extends TestCase
 {
     /**
@@ -210,9 +211,7 @@ class ResourceTest extends TestCase
      */
     public function testOffsetGetInexistent(): void
     {
-        static::expectException(\TypeError::class);
-
-        $this->object['foo'];
+        static::assertNull($this->object['foo']);
     }
 
     /**

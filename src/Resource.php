@@ -143,9 +143,9 @@ class Resource implements \ArrayAccess, \Countable, \IteratorAggregate, \JsonSer
         return isset($this->data[$offset]);
     }
 
-    public function offsetGet($offset): string
+    public function offsetGet($offset): ?string
     {
-        return $this->data[$offset];
+        return $this->data[$offset] ?? null;
     }
 
     public function offsetSet($offset, $value): void
