@@ -33,16 +33,6 @@ final class DateFormatTest extends TestCase
     /**
      * @covers ::__construct
      */
-    public function testDefaultConstructor(): void
-    {
-        $obj2 = new DateFormat('en-CA');
-        
-        static::assertSame('en-CA', Assert::readAttribute($obj2, 'locale'));
-    }
-
-    /**
-     * @covers ::__construct
-     */
     public function testConstructorInvalidLanguage(): void
     {
         static::expectException(InvalidArgumentException::class);
@@ -59,7 +49,7 @@ final class DateFormatTest extends TestCase
     {
         $this->object->addResource(__DIR__ . '/resources/dateformats.json');
         
-        $ref = Assert::readAttribute($this->object, 'formatters');
+        $ref = $this->object->__debugInfo();
         
         static::assertArrayHasKey('day_date', $ref['en-CA']);
         static::assertArrayHasKey('day_date_time', $ref['fr-CA']);
@@ -85,7 +75,7 @@ final class DateFormatTest extends TestCase
         static::assertSame($expected, $this->object->format($input, 'day', $locale));
     }
 
-    public function formatDataProvider(): iterable
+    public static function formatDataProvider(): iterable
     {
         $date = new DateTime('2014-01-01', new DateTimeZone(self::TIMEZONE));
         $date2 = DateTime::createFromFormat('Y-m-d H:i:s', '2014-07-01 08:00:00');

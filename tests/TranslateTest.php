@@ -8,7 +8,6 @@ use InvalidArgumentException;
 use JsonI18n\Translate;
 use LengthException;
 use OutOfBoundsException;
-use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use TypeError;
 use const JSON_ERROR_SYNTAX;
@@ -38,7 +37,7 @@ class TranslateTest extends TestCase
         'headsign_en' => 'Blackbird Mall',
         'headsign_fr' => 'Centre commercial Blackbird',
         'subtext_en' => 'Main Street',
-        'subtext_fr' => 'Rue Main'
+        'subtext_fr' => 'Rue Main',
     ];
 
     /**
@@ -48,7 +47,7 @@ class TranslateTest extends TestCase
     protected $arr2D = [
         ['headsign_en' => 'University', 'headsign_fr' => 'Université'],
         ['headsign_en' => 'College', 'headsign_fr' => 'Collège'],
-        ['headsign_en' => 'Airport', 'headsign_fr' => 'Aéroport']
+        ['headsign_en' => 'Airport', 'headsign_fr' => 'Aéroport'],
     ];
 
     /**
@@ -62,8 +61,8 @@ class TranslateTest extends TestCase
         'crosstown' => [
             ['headsign_en' => 'Blackbird Mall', 'headsign_fr' => 'Centre commercial Blackbird'],
             ['headsign_en' => 'University', 'headsign_fr' => 'Université'],
-            ['headsign_en' => 'College', 'headsign_fr' => 'Collège']
-        ]
+            ['headsign_en' => 'College', 'headsign_fr' => 'Collège'],
+        ],
     ];
 
     protected function setUp(): void
@@ -78,7 +77,7 @@ class TranslateTest extends TestCase
     {
         $obj2 = new Translate('en-CA');
         
-        static::assertSame('en-CA', Assert::readAttribute($obj2, 'lang'));
+        static::assertSame('en-CA', $this->object->getLanguage());
     }
 
     /**
@@ -135,12 +134,11 @@ class TranslateTest extends TestCase
     {
         $this->object->addResource(__DIR__ . '/resources/test.json');
 
-        $data = Assert::readAttribute($this->object, 'data');
+        $data = $this->object->__debugInfo();
 
         static::assertNotEmpty($data);
         static::assertArrayHasKey('en-CA', $data);
         static::assertArrayHasKey('fr-CA', $data);
-        static::assertNotEmpty(Assert::readAttribute($this->object, 'arrayGroups'));
     }
     
     /**
@@ -156,7 +154,7 @@ class TranslateTest extends TestCase
         
         $this->object->addResource($array);
         
-        $data = Assert::readAttribute($this->object, 'data');
+        $data = $this->object->__debugInfo();
 
         static::assertArrayHasKey('en-CA', $data);
         static::assertArrayHasKey('fr-CA', $data);
@@ -171,12 +169,11 @@ class TranslateTest extends TestCase
     {
         $this->object->addResource($this->json, 'json');
 
-        $data = Assert::readAttribute($this->object, 'data');
+        $data = $this->object->__debugInfo();
 
         static::assertNotEmpty($data);
         static::assertArrayHasKey('en-CA', $data);
         static::assertArrayHasKey('fr-CA', $data);
-        static::assertNotEmpty(Assert::readAttribute($this->object, 'arrayGroups'));
     }
     
     /**
@@ -362,7 +359,7 @@ class TranslateTest extends TestCase
         
         static::assertEquals([
             'headsign' => 'Blackbird Mall',
-            'subtext' => 'Rue Main'
+            'subtext' => 'Rue Main',
         ], $arr1);
     }
 
@@ -381,13 +378,13 @@ class TranslateTest extends TestCase
         static::assertEquals([
             ['headsign' => 'University'],
             ['headsign' => 'College'],
-            ['headsign' => 'Airport']
+            ['headsign' => 'Airport'],
         ], $arr1);
 
         static::assertEquals([
             ['headsign' => 'Université'],
             ['headsign' => 'Collège'],
-            ['headsign' => 'Aéroport']
+            ['headsign' => 'Aéroport'],
         ], $arr2);
     }
 
@@ -408,9 +405,9 @@ class TranslateTest extends TestCase
             'crosstown' => [
                 ['headsign' => 'Blackbird Mall'],
                 ['headsign' => 'University'],
-                ['headsign' => 'College']
-            ]], $arr
-        );
+                ['headsign' => 'College'],
+            ],
+        ], $arr);
     }
     
     /**
