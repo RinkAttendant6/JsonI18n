@@ -159,9 +159,9 @@ class ResourceTest extends TestCase
     public function testMergeDifferentLocales(): void
     {
         set_error_handler(
-            static function ( $errno, $errstr ) {
+            static function ($errno, $errstr): void {
                 restore_error_handler();
-                throw new \Exception( $errstr, $errno );
+                throw new \Exception($errstr, $errno);
             },
             E_ALL
         );
