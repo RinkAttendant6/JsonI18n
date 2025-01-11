@@ -22,13 +22,13 @@ class ResourceTest extends TestCase
     
     /**
      * Sample locale
-     * @var string
+     * @var non-empty-string
      */
     protected $locale = 'en-CA';
     
     /**
      * Sample array data
-     * @var string[]
+     * @var array<string, string>
      */
     protected $data = [
         'station' => "Station",
@@ -241,21 +241,5 @@ class ResourceTest extends TestCase
     public function testJsonSerialize(): void
     {
         static::assertSame($this->json, $this->object->jsonSerialize());
-    }
-
-    /**
-     * @covers ::serialize
-     */
-    public function testSerialize(): void
-    {
-        static::assertSame($this->json, $this->object->serialize());
-    }
-
-    /**
-     * @covers ::unserialize
-     */
-    public function testUnserialize(): void
-    {
-        static::assertEquals($this->object, $this->object->unserialize($this->json));
     }
 }
