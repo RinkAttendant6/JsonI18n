@@ -9,7 +9,7 @@ namespace JsonI18n;
  * @author Vincent Diep
  * @license https://www.mozilla.org/en-US/MPL/2.0/ MPL-2.0
  */
-class Resource implements \ArrayAccess, \Countable, \IteratorAggregate, \JsonSerializable, \Serializable
+class Resource implements \ArrayAccess, \Countable, \IteratorAggregate, \JsonSerializable
 {
     /**
      * The translation values
@@ -26,8 +26,8 @@ class Resource implements \ArrayAccess, \Countable, \IteratorAggregate, \JsonSer
     
     /**
      * Creates a new translation resource
-     * @param string $locale The locale
-     * @param string[] $data The translation data
+     * @param non-empty-string $locale The locale
+     * @param array<string, string> $data The translation data
      */
     public function __construct(string $locale, array $data = [])
     {
@@ -51,7 +51,7 @@ class Resource implements \ArrayAccess, \Countable, \IteratorAggregate, \JsonSer
     
     /**
      * Sets the locale of the resource
-     * @param string $locale The locale
+     * @param non-empty-string $locale The locale
      * @throws \InvalidArgumentException When provided with an invalid locale
      */
     private function setLocale(string $locale)
@@ -67,7 +67,7 @@ class Resource implements \ArrayAccess, \Countable, \IteratorAggregate, \JsonSer
 
     /**
      * Gets the locale of the resource
-     * @return string
+     * @return non-empty-string
      */
     public function getLocale(): string
     {
@@ -99,7 +99,7 @@ class Resource implements \ArrayAccess, \Countable, \IteratorAggregate, \JsonSer
     
     /**
      * Returns all translation values
-     * @return string[]
+     * @return array<string, string>
      */
     public function getData(): array
     {
@@ -122,7 +122,7 @@ class Resource implements \ArrayAccess, \Countable, \IteratorAggregate, \JsonSer
 
     /**
      * Gets the number of translation values in the resource
-     * @return int
+     * @return non-negative-int
      */
     public function count(): int
     {
@@ -143,9 +143,9 @@ class Resource implements \ArrayAccess, \Countable, \IteratorAggregate, \JsonSer
         return isset($this->data[$offset]);
     }
 
-    public function offsetGet($offset): string
+    public function offsetGet($offset): ?string
     {
-        return $this->data[$offset];
+        return $this->data[$offset] ?? null;
     }
 
     public function offsetSet($offset, $value): void
@@ -164,26 +164,7 @@ class Resource implements \ArrayAccess, \Countable, \IteratorAggregate, \JsonSer
      */
     public function jsonSerialize(): string
     {
-        $output = array($this->getLocale() => $this->data);
+        $output = [$this->getLocale() => $this->data];
         return json_encode($output, JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG);
-    }
-
-    /**
-     * Serializes the resource into a JSON object (internally)
-     * @return string
-     */
-    public function serialize(): string
-    {
-        return $this->jsonSerialize();
-    }
-
-    /**
-     * Unserializes a serialized instance of a resource
-     * @param string $serialized
-     * @return \self
-     */
-    public function unserialize($serialized): self
-    {
-        return static::fromJson($serialized);
     }
 }

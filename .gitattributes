@@ -1,0 +1,9 @@
+/.devcontainer  export-ignore
+/.github        export-ignore
+/.vscode        export-ignore
+/tests          export-ignore
+/.gitignore     export-ignore
+/.phpcs.xml     export-ignore
+/.phplint.yml   export-ignore
+/.styleci.yml   export-ignore
+/phpunit.xml    export-ignore

@@ -16,7 +16,7 @@ class ResourceBuilder
     /**
      * Creates a Resource from a PHP array
      * @param array $data Resource data
-     * @param string $locale The locale
+     * @param non-empty-string $locale The locale
      * @return Resource
      */
     public static function fromArray(array $data, string $locale): Resource
@@ -27,7 +27,7 @@ class ResourceBuilder
     /**
      * Creates a Resource from a JSON string
      * @param string $input The JSON object
-     * @param string $locale The locale
+     * @param non-empty-string $locale The locale
      * @return Resource
      */
     public static function fromString(string $input, string $locale): Resource
@@ -46,7 +46,7 @@ class ResourceBuilder
     /**
      * Creates a Resource from a file
      * @param string $file The path to the file
-     * @param string $locale The locale
+     * @param non-empty-string $locale The locale
      * @return Resource
      */
     public static function fromFile(string $file, string $locale): Resource
