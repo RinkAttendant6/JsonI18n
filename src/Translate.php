@@ -15,7 +15,7 @@ class Translate
 {
     /**
      * The default output language
-     * @var string
+     * @var non-empty-string
      */
     protected $lang;
     
@@ -27,13 +27,13 @@ class Translate
     
     /**
      * Set of resources
-     * @var Resource[]
+     * @var array<string, Resource>
      */
     protected $data;
     
     /**
      * Set of settings
-     * @var array[]
+     * @var Settings
      */
     protected $settings;
     
@@ -144,7 +144,7 @@ class Translate
         if (isset($metadata['arrayGroups'])) {
             foreach ($metadata['arrayGroups'] as $name => $values) {
                 if (!isset($this->arrayGroups[$name])) {
-                    $this->arrayGroups[$name] = array();
+                    $this->arrayGroups[$name] = [];
                 }
                 
                 foreach ($values as $locale => $keyName) {
@@ -182,7 +182,7 @@ class Translate
      */
     public function setLanguage(string $lang): void
     {
-        if (!is_string($lang) || empty($lang)) {
+        if (empty($lang)) {
             throw new InvalidArgumentException("Invalid language $lang");
         }
         
@@ -191,7 +191,7 @@ class Translate
     
     /**
      * Returns the current language
-     * @return string
+     * @return non-empty-string
      */
     public function getLanguage(): string
     {
@@ -202,16 +202,14 @@ class Translate
      * Returns localized text
      * Use this if you need to pass the localized string to another function such as ucwords() or ucfirst()
      * @param string $key The key (description) of the localized text
-     * @param string $lang The output language. Default is default language.
+     * @param non-empty-string|null $lang The output language. Default is default language.
      * @return string The localized text
      * @throws \OutOfBoundsException If the language or key is invalid.
      * @throws \LogicException If the value of the key is an array.
      */
     public function __(string $key, ?string $lang = null): string
     {
-        if ($lang === null) {
-            $lang = $this->lang;
-        }
+        $lang = $lang ?? $this->lang;
         
         if (!isset($this->data[$lang])) {
             throw new \OutOfBoundsException("Invalid language: $lang");
@@ -230,7 +228,7 @@ class Translate
     /**
      * Prints localized text
      * @param string $key The key (description) of the localized text
-     * @param string $lang The output language. Default is default language.
+     * @param non-empty-string|null $lang The output language. Default is default language.
      * @codeCoverageIgnore
      */
     public function _e(string $key, ?string $lang = null): void
@@ -242,16 +240,14 @@ class Translate
      * Returns "formatted" localized text
      * @param string $key The key (description) of the localized text
      * @param string|array $strings See sprintf (string) and vsprintf (array)
-     * @param string $lang The output language. Default is default language.
+     * @param non-empty-string|null $lang The output language. Default is default language.
      * @return string The "formatted" localized text
      * @throws \OutOfBoundsException If the language or key is invalid.
      * @throws InvalidArgumentException If the formatter strings is not a string or array.
      */
     public function _f(string $key, $strings, ?string $lang = null): string
     {
-        if ($lang === null) {
-            $lang = $this->lang;
-        }
+        $lang = $lang ?? $this->lang;
         
         if (!isset($this->data[$lang])) {
             throw new \OutOfBoundsException("Invalid language: $lang");
@@ -296,7 +292,7 @@ class Translate
      * @param array $arr The array to localize
      * @param string $group The name of the group of fields to flatten
      * @param int $depth The depth of the array
-     * @param string $lang The output language. Default is default language.
+     * @param non-empty-string|null $lang The output language. Default is default language.
      * @return array
      */
     public function localizeDeepArray(?array $arr, string $group, int $depth = 1, ?string $lang = null): ?array
@@ -327,7 +323,7 @@ class Translate
      * Flattens an array group
      * @param array $arr The array to localize
      * @param string $group The name of the group of fields to flatten
-     * @param string $lang The output language. Default is default language.
+     * @param non-empty-string|null $lang The output language. Default is default language.
      * @return array
      * @throws \OutOfBoundsException If the group does not exist or if the array values do not contain the key in a given language
      */
@@ -341,9 +337,7 @@ class Translate
             throw new \OutOfBoundsException("Invalid group: $group");
         }
 
-        if ($lang === null) {
-            $lang = $this->lang;
-        }
+        $lang = $lang ?? $this->lang;
 
         if (!isset($this->arrayGroups[$group][$lang])) {
             throw new \OutOfBoundsException("Invalid language: $lang");

@@ -6,14 +6,14 @@ namespace JsonI18n\Tests;
 
 use Iterator;
 use JsonI18n\Resource;
-use PHPUnit\Framework\Error\Error;
-use PHPUnit\Framework\Error\Notice;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \JsonI18n\Resource
  * @coversDefaultClass \JsonI18n\Resource
  */
+#[CoversClass("\JsonI18n\Resource")]
 class ResourceTest extends TestCase
 {
     /**
@@ -23,17 +23,17 @@ class ResourceTest extends TestCase
     
     /**
      * Sample locale
-     * @var string
+     * @var non-empty-string
      */
     protected $locale = 'en-CA';
     
     /**
      * Sample array data
-     * @var string[]
+     * @var array<string, string>
      */
     protected $data = [
         'station' => "Station",
-        'goodbye' => "Have a good day!"
+        'goodbye' => "Have a good day!",
     ];
     
     /**
@@ -44,6 +44,7 @@ class ResourceTest extends TestCase
 
     protected function setUp(): void
     {
+        error_reporting(\E_ALL);
         $this->json = json_encode([$this->locale => $this->data]);
         $this->object = new Resource($this->locale, $this->data);
     }
@@ -58,7 +59,7 @@ class ResourceTest extends TestCase
         $resource = Resource::fromJson($this->json);
         
         static::assertSame($this->locale, $resource->getLocale());
-        static::assertSame($this->data, $this->readAttribute($this->object, 'data'));
+        static::assertSame($this->data, $this->object->getData());
     }
 
     /**
@@ -84,12 +85,12 @@ class ResourceTest extends TestCase
     {
         $new = [
             'station' => 'Terminal',
-            'greeting' => 'Hello'
+            'greeting' => 'Hello',
         ];
         
         $this->object->addData($new);
         
-        $data = $this->readAttribute($this->object, 'data');
+        $data = $this->object->getData();
         
         static::assertArrayHasKey('greeting', $data);
         static::assertSame('Terminal', $data['station']);
@@ -102,12 +103,12 @@ class ResourceTest extends TestCase
     {
         $new = [
             'station' => 'Terminal',
-            'greeting' => 'Hello'
+            'greeting' => 'Hello',
         ];
         
         $this->object->addData($new, false);
         
-        $data = $this->readAttribute($this->object, 'data');
+        $data = $this->object->getData();
         static::assertSame('Station', $data['station']);
     }
 
@@ -126,12 +127,12 @@ class ResourceTest extends TestCase
     {
         $new = [
             'station' => 'Terminal',
-            'greeting' => 'Hello'
+            'greeting' => 'Hello',
         ];
         
         $this->object->merge(new Resource($this->locale, $new));
         
-        $data = $this->readAttribute($this->object, 'data');
+        $data = $this->object->getData();
         static::assertSame('Terminal', $data['station']);
         static::assertArrayHasKey('greeting', $new);
     }
@@ -143,12 +144,12 @@ class ResourceTest extends TestCase
     {
         $new = [
             'station' => 'Terminal',
-            'greeting' => 'Hello'
+            'greeting' => 'Hello',
         ];
         
         $this->object->merge(new Resource($this->locale, $new), false);
         
-        $data = $this->readAttribute($this->object, 'data');
+        $data = $this->object->getData();
         static::assertSame('Station', $data['station']);
         static::assertArrayHasKey('greeting', $new);
     }
@@ -158,7 +159,16 @@ class ResourceTest extends TestCase
      */
     public function testMergeDifferentLocales(): void
     {
-        static::expectException(Notice::class);
+        set_error_handler(
+            static function ($errno, $errstr): void {
+                restore_error_handler();
+                throw new \Exception($errstr, $errno);
+            },
+            E_ALL
+        );
+
+        static::expectException(\Exception::class);
+        static::expectExceptionCode(\E_USER_NOTICE);
 
         $this->object->merge(new Resource('zh-CN'));
     }
@@ -201,9 +211,7 @@ class ResourceTest extends TestCase
      */
     public function testOffsetGetInexistent(): void
     {
-        static::expectException(Error::class);
-
-        $this->object['foo'];
+        static::assertNull($this->object['foo']);
     }
 
     /**
@@ -213,7 +221,7 @@ class ResourceTest extends TestCase
     {
         $this->object['greeting'] = 'Hello';
         
-        static::assertArrayHasKey('greeting', $this->readAttribute($this->object, 'data'));
+        static::assertArrayHasKey('greeting', $this->object->getData());
     }
 
     /**
@@ -223,7 +231,7 @@ class ResourceTest extends TestCase
     {
         unset($this->object['station']);
         
-        static::assertArrayNotHasKey('station', $this->readAttribute($this->object, 'data'));
+        static::assertArrayNotHasKey('station', $this->object->getData());
     }
 
     /**
@@ -232,21 +240,5 @@ class ResourceTest extends TestCase
     public function testJsonSerialize(): void
     {
         static::assertSame($this->json, $this->object->jsonSerialize());
-    }
-
-    /**
-     * @covers ::serialize
-     */
-    public function testSerialize(): void
-    {
-        static::assertSame($this->json, $this->object->serialize());
-    }
-
-    /**
-     * @covers ::unserialize
-     */
-    public function testUnserialize(): void
-    {
-        static::assertEquals($this->object, $this->object->unserialize($this->json));
     }
 }

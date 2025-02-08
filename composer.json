@@ -30,24 +30,22 @@
         "sort-packages": true
     },
     "require": {
-        "php": "^7.1",
+        "php": "^7.1|^8.1",
         "ext-intl": "*",
         "ext-json": "*"
     },
     "require-dev": {
-        "overtrue/phplint": "^1.1",
+        "overtrue/phplint": "^3|^9",
         "pds/skeleton": "^1.0.0",
         "phpmd/phpmd": "@stable",
-        "phpstan/phpstan": "^0.12",
-        "phpunit/phpunit": "^7.5",
-        "sebastian/phpcpd": "^4.1",
-        "squizlabs/php_codesniffer": "^3.5"
+        "phpstan/phpstan": "^1|^2.1",
+        "phpunit/phpunit": "^7|^10.5|^11.5",
+        "squizlabs/php_codesniffer": "^3.11"
     },
     "scripts": {
         "lint": [
             "phplint",
             "phpcs src",
-            "phpcpd src",
             "phpstan analyse src tests --level=1",
             "phpmd src text codesize,unusedcode,naming,design --ignore-violations-on-exit"
         ],

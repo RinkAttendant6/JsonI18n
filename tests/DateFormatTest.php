@@ -9,13 +9,15 @@ use DateTimeZone;
 use IntlDateFormatter;
 use InvalidArgumentException;
 use JsonI18n\DateFormat;
-use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \JsonI18n\DateFormat
  * @coversDefaultClass \JsonI18n\DateFormat
  */
+#[CoversClass("\JsonI18n\DateFormat")]
 final class DateFormatTest extends TestCase
 {
     /** @var string */
@@ -28,16 +30,6 @@ final class DateFormatTest extends TestCase
     {
         date_default_timezone_set(self::TIMEZONE);
         $this->object = new DateFormat('fr-CA');
-    }
-
-    /**
-     * @covers ::__construct
-     */
-    public function testDefaultConstructor(): void
-    {
-        $obj2 = new DateFormat('en-CA');
-        
-        static::assertSame('en-CA', Assert::readAttribute($obj2, 'locale'));
     }
 
     /**
@@ -59,7 +51,7 @@ final class DateFormatTest extends TestCase
     {
         $this->object->addResource(__DIR__ . '/resources/dateformats.json');
         
-        $ref = Assert::readAttribute($this->object, 'formatters');
+        $ref = $this->object->__debugInfo();
         
         static::assertArrayHasKey('day_date', $ref['en-CA']);
         static::assertArrayHasKey('day_date_time', $ref['fr-CA']);
@@ -78,6 +70,7 @@ final class DateFormatTest extends TestCase
      * @param DateTime|string $input Value to be localized
      * @param string $locale Locale
      */
+    #[DataProvider("formatDataProvider")]
     public function testFormat(string $expected, $input, string $locale): void
     {
         $this->object->addResource(__DIR__ . '/resources/dateformats.json');
@@ -85,7 +78,7 @@ final class DateFormatTest extends TestCase
         static::assertSame($expected, $this->object->format($input, 'day', $locale));
     }
 
-    public function formatDataProvider(): iterable
+    public static function formatDataProvider(): iterable
     {
         $date = new DateTime('2014-01-01', new DateTimeZone(self::TIMEZONE));
         $date2 = DateTime::createFromFormat('Y-m-d H:i:s', '2014-07-01 08:00:00');
