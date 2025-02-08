@@ -1,9 +1,9 @@
 # JsonI18n 
 
-![Packagist License](https://img.shields.io/packagist/l/RinkAttendant6/json-i18n)
+[![Packagist License](https://img.shields.io/packagist/l/RinkAttendant6/json-i18n)](https://github.com/RinkAttendant6/JsonI18n/blob/main/LICENSE.md)
 [![Build Status](https://github.com/RinkAttendant6/JsonI18n/workflows/Test/badge.svg)](https://github.com/RinkAttendant6/JsonI18n/actions)
-![GitHub Issues](https://img.shields.io/github/issues/RinkAttendant6/JsonI18n)
-![Packagist Version](https://img.shields.io/packagist/v/RinkAttendant6/json-i18n)
+[![GitHub Issues](https://img.shields.io/github/issues/RinkAttendant6/JsonI18n)](https://github.com/RinkAttendant6/JsonI18n/issues)
+[![Packagist Version](https://img.shields.io/packagist/v/RinkAttendant6/json-i18n)](https://packagist.org/packages/rinkattendant6/json-i18n)
 ![Packagist Downloads](https://img.shields.io/packagist/dt/RinkAttendant6/json-i18n)
 
 Simple PHP internationalization library using JSON data.
@@ -123,7 +123,7 @@ In addition to localizing strings, JsonI18n can localize arrays. Values for each
 ```php
 $input = [
     'label_en_CA' => 'Name',
-    'label_fr_CA' => 'Nom'
+    'label_fr_CA' => 'Nom',
 ];
 $output = $t->localizeDeepArray($input, 'label', 0, 'en-CA');
 
